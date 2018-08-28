@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+	<springProperty scope="context" name="springAppName" source="spring.application.name"/>
+	<springProperty scope="context" name="kafkaService" source="spring.kafka.bootstrap-servers"/>
+	<appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+		<encoder>
+            <pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread, %X{X-B3-TraceId:-},%X{X-B3-SpanId:-}] %-5level %logger{36} - %msg%n</pattern>
+        </encoder>
+	</appender>
+
+	<!-- This is the kafkaAppender -->
+	<appender name="kafkaAppender"
+		class="com.github.danielwegener.logback.kafka.KafkaAppender">
+		<encoder
+			class="net.logstash.logback.encoder.LoggingEventCompositeJsonEncoder">
+			<providers>
+				<mdc>
+					<excludeMdcKeyName>X-B3-TraceId</excludeMdcKeyName>
+					<excludeMdcKeyName>X-B3-SpanId</excludeMdcKeyName>
+				</mdc> <!-- MDC variables on the Thread will be written as JSON fields -->
+				<context /> <!--Outputs entries from logback's context -->
+				<version /> <!-- Logstash json format version, the @version field in the output -->
+				<logLevel />
+				<loggerName />
+
+				<pattern>
+					<pattern>
+						{
+						"serviceName": "${springAppName}"
+						}
+					</pattern>
+				</pattern>
+
+				<threadName />
+				<message />
+
+				<logstashMarkers />
+				<arguments />
+
+				<stackTrace />
+			</providers>
+		</encoder>
+		<topic>zipkin</topic>
+		<keyingStrategy
+			class="com.github.danielwegener.logback.kafka.keying.NoKeyKeyingStrategy" />
+		<deliveryStrategy
+			class="com.github.danielwegener.logback.kafka.delivery.AsynchronousDeliveryStrategy" />
+
+		<!-- Optional parameter to use a fixed partition -->
+		<!-- <partition>0</partition> -->
+
+		<!-- Optional parameter to include log timestamps into the kafka message -->
+		<!-- <appendTimestamp>true</appendTimestamp> -->
+
+		<!-- each <producerConfig> translates to regular kafka-client config (format: 
+			key=value) -->
+		<!-- producer configs are documented here: https://kafka.apache.org/documentation.html#newproducerconfigs -->
+		<!-- bootstrap.servers is the only mandatory producerConfig -->
+		<producerConfig>bootstrap.servers=${kafkaService}</producerConfig>
+		<producerConfig>buffer.memory=8388608</producerConfig>
+
+		<!-- If the kafka broker is not online when we try to log, just block until 
+			it becomes available -->
+		<producerConfig>metadata.fetch.timeout.ms=99999999999</producerConfig>
+		<!-- define a client-id that you use to identify yourself against the kafka 
+			broker -->
+		<producerConfig>client.id=${HOSTNAME}-${CONTEXT_NAME}-logback-restrictive
+		</producerConfig>
+		<!-- use gzip to compress each batch of log messages. valid values: none, 
+			gzip, snappy -->
+		<producerConfig>compression.type=gzip</producerConfig>
+		<!-- this is the fallback appender if kafka is not available. -->
+		<appender-ref ref="STDOUT" />
+	</appender>
+
+	<root level="info">
+		<appender-ref ref="kafkaAppender" />
+		<appender-ref ref="STDOUT" />
+	</root>
+</configuration>

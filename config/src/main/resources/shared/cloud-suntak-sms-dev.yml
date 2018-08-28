@@ -1,0 +1,4 @@
+aliyun:
+  sms:
+    AccessKeyID: ${SMS_ACCESSKEYID}
+    AccessKeySecret: ${SMS_ACCESSKEYSECRET}
