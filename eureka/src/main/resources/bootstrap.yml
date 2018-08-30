@@ -1,0 +1,21 @@
+server:
+  port: 8761
+spring:
+  application:
+    name: eureka
+  sleuth:
+    traceId128:
+      true
+  kafka:
+    bootstrap-servers: ${KAFKA_SERVER}
+eureka:
+  instance:
+    prefer-ip-address: true
+    hostname: localhost
+  client:
+    registerWithEureka: false
+    fetchRegistry: false
+    server:
+      waitTimeInMsWhenSyncEmpty: 0
+    serviceUrl:
+      defaultZone: http://${eureka.instance.hostname}:${server.port}/eureka/

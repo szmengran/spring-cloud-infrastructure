@@ -1,6 +1,0 @@
-aliyun:
-  sms:
-    AccessKeyID: ${SMS_ACCESSKEYID}
-    AccessKeySecret: ${SMS_ACCESSKEYSECRET}
-    templatecode: SMS_142388834
-    signname: 崇达技术
