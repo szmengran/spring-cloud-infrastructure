@@ -1,0 +1,37 @@
+version: '3.1'
+services:
+  config:
+    image: szmengran/config:$CLOUD_VERSION
+    restart: always
+    environment:
+      - KAFKA_SERVER=$KAFKA_SERVER
+      - ENVIRONMENT=$ENVIRONMENT
+      - EUREKA_SERVER_ADDRESS=http://eureka:8761/eureka
+      - GITLAB_USERNAME=$GITLAB_USERNAME
+      - GITLAB_PASSWORD=$GITLAB_PASSWORD
+    ports:
+     - "10001:10001"
+  gateway:
+    image: szmengran/gateway:$CLOUD_VERSION
+    restart: always
+    environment:
+      - KAFKA_SERVER=$KAFKA_SERVER
+      - EUREKA_SERVER_ADDRESS=http://eureka:8761/eureka
+      - CONFIG_SERVER_ADDRESS=http://config:10001
+      - ENVIRONMENT=$ENVIRONMENT
+    ports:
+     - "10000:10000"
+  oauth:
+    image: szmengran/oauth:$CLOUD_VERSION
+    restart: always
+    environment:
+      - KAFKA_SERVER=$KAFKA_SERVER
+      - EUREKA_SERVER_ADDRESS=http://eureka:8761/eureka
+      - CONFIG_SERVER_ADDRESS=http://config:10001
+      - ENVIRONMENT=$ENVIRONMENT
+    ports:
+     - 10002:10002
+networks:
+  default:
+    external:
+      name: cloud

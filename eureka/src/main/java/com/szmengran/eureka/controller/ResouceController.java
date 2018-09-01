@@ -25,8 +25,12 @@ public class ResouceController {
 	@GetMapping("/resources/{fileName}")
 	public String downloadFile(HttpServletRequest request, HttpServletResponse response, @PathVariable("fileName") String fileName) {
 	    if (fileName != null) {
+	    	String filePath = this.getClass().getResource("/"+fileName).getPath();
+	    	String path = this.getClass().getProtectionDomain().getCodeSource().getLocation().getFile();
+	    	System.out.println(path);
+	    	System.out.println(filePath);
 	        //设置文件路径
-	        File file = new File("src/main/resources/" , fileName);
+	        File file = new File(filePath);
 	        if (file.exists()) {
 	            response.setContentType("application/force-download");// 设置强制下载不打开
 	            response.addHeader("Content-Disposition", "attachment;fileName=" + fileName);// 设置文件名
