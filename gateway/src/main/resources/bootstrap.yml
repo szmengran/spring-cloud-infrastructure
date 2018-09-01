@@ -28,3 +28,5 @@ endpoints:
     enabled: true
   health:
     sensitive: false
+logging:
+  config: ${EUREKA_SERVER_ADDRESS}/../resources/logback-spring.xml

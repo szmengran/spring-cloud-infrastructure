@@ -27,3 +27,5 @@ spring:
       true
   kafka:
     bootstrap-servers: ${KAFKA_SERVER}
+logging:
+  config: ${EUREKA_SERVER_ADDRESS}/../resources/logback-spring.xml
