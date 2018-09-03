@@ -1,12 +1,5 @@
 version: '3.1'
 services:
-  eureka:
-    image: szmengran/eureka:$CLOUD_VERSION
-    restart: always
-    environment:
-      - KAFKA_SERVER=$KAFKA_SERVER
-    ports:
-     - "8761:8761"
   config:
     image: szmengran/config:$CLOUD_VERSION
     restart: always
@@ -18,6 +11,13 @@ services:
       - GITLAB_PASSWORD=$GITLAB_PASSWORD
     ports:
      - "10001:10001"
+  eureka:
+    image: szmengran/eureka:$CLOUD_VERSION
+    restart: always
+    environment:
+      - KAFKA_SERVER=$KAFKA_SERVER
+    ports:
+     - "8761:8761"
   gateway:
     image: szmengran/gateway:$CLOUD_VERSION
     restart: always
