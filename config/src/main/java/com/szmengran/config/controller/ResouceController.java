@@ -1,4 +1,4 @@
-package com.szmengran.eureka.controller;
+package com.szmengran.config.controller;
 
 import java.io.BufferedInputStream;
 import java.io.IOException;
@@ -13,10 +13,12 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
 
 /**
- * @Package com.szmengran.config.controller
- * @Description: 资源管理
- * @date 2018年8月31日 上午9:07:12
- * @author <a href="mailto:android_li@sina.cn">Joe</a>
+ * File Name:ResouceController.java 
+ * Package Name:com.szmengran.config.controller 
+ * @TODO:
+ * @author <a href="mailto:android_li@sina.cn">LiMaoYuan</a>
+ * Copyright (c) 2018, 深圳市梦燃科技有限公司 All Rights Reserved. 
+ * @createTime 2018年9月4日上午12:32:52
  */
 @RestController
 public class ResouceController {
@@ -60,3 +62,4 @@ public class ResouceController {
 	    return null;
 	}
 }
+
