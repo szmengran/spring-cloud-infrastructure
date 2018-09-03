@@ -19,5 +19,3 @@ eureka:
       waitTimeInMsWhenSyncEmpty: 0
     serviceUrl:
       defaultZone: http://${eureka.instance.hostname}:${server.port}/eureka/
-logging:
-  config: ${CONFIG_SERVER_ADDRESS}/resources/logback-spring.xml

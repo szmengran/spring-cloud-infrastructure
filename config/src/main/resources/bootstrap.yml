@@ -16,7 +16,7 @@ management:
         include: bus-refresh
 spring:
   application:
-    name: cloud-config-server
+    name: config
   profiles:
     active: ${ENVIRONMENT}
   bus:
