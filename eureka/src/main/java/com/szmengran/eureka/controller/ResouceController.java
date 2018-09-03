@@ -1,9 +1,8 @@
 package com.szmengran.eureka.controller;
 
 import java.io.BufferedInputStream;
-import java.io.File;
-import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.OutputStream;
 
 import javax.servlet.http.HttpServletRequest;
@@ -23,48 +22,40 @@ import org.springframework.web.bind.annotation.RestController;
 public class ResouceController {
 
 	@GetMapping("/resources/{fileName}")
-	public String downloadFile(HttpServletRequest request, HttpServletResponse response, @PathVariable("fileName") String fileName) {
+	public String downloadFile(HttpServletRequest request, HttpServletResponse response, @PathVariable("fileName") String fileName) throws Exception {
 	    if (fileName != null) {
-	    	String filePath = this.getClass().getResource("/"+fileName).getPath();
-	    	String path = this.getClass().getProtectionDomain().getCodeSource().getLocation().getFile();
-	    	System.out.println(path);
-	    	System.out.println(filePath);
-	        //设置文件路径
-	        File file = new File(filePath);
-	        if (file.exists()) {
-	            response.setContentType("application/force-download");// 设置强制下载不打开
-	            response.addHeader("Content-Disposition", "attachment;fileName=" + fileName);// 设置文件名
-	            byte[] buffer = new byte[1024];
-	            FileInputStream fis = null;
-	            BufferedInputStream bis = null;
-	            try {
-	                fis = new FileInputStream(file);
-	                bis = new BufferedInputStream(fis);
-	                OutputStream os = response.getOutputStream();
-	                int i = bis.read(buffer);
-	                while (i != -1) {
-	                    os.write(buffer, 0, i);
-	                    i = bis.read(buffer);
-	                }
-	            } catch (Exception e) {
-	                e.printStackTrace();
-	            } finally {
-	                if (bis != null) {
-	                    try {
-	                        bis.close();
-	                    } catch (IOException e) {
-	                        e.printStackTrace();
-	                    }
-	                }
-	                if (fis != null) {
-	                    try {
-	                        fis.close();
-	                    } catch (IOException e) {
-	                        e.printStackTrace();
-	                    }
-	                }
-	            }
-	        }
+	    	response.setContentType("application/force-download");// 设置强制下载不打开
+            response.addHeader("Content-Disposition", "attachment;fileName=" + fileName);// 设置文件名
+            byte[] buffer = new byte[1024];
+            InputStream in = null; 
+            BufferedInputStream bis = null;
+            try {
+            	in = getClass().getResourceAsStream("/"+fileName); 
+                bis = new BufferedInputStream(in);
+                OutputStream os = response.getOutputStream();
+                int i = bis.read(buffer);
+                while (i != -1) {
+                    os.write(buffer, 0, i);
+                    i = bis.read(buffer);
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            } finally {
+                if (bis != null) {
+                    try {
+                        bis.close();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                }
+                if (in != null) {
+                    try {
+                        in.close();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
 	    }
 	    return null;
 	}
