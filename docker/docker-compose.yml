@@ -6,6 +6,7 @@ services:
     environment:
       - KAFKA_SERVER=$KAFKA_SERVER
       - ENVIRONMENT=$ENVIRONMENT
+      - EUREKA_SERVER_ADDRESS=http://eureka:8761/eureka
       - GITLAB_USERNAME=$GITLAB_USERNAME
       - GITLAB_PASSWORD=$GITLAB_PASSWORD
     ports:
