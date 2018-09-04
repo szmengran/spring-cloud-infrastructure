@@ -36,7 +36,7 @@ services:
     image: szmengran/oauth:$CLOUD_VERSION
     restart: always
     environment:
-      - KAFKA_SERVER=	
+      - KAFKA_SERVER=$KAFKA_SERVER
       - EUREKA_SERVER_ADDRESS=http://eureka:8761/eureka
       - CONFIG_SERVER_ADDRESS=http://config:10001
       - ENVIRONMENT=$ENVIRONMENT
