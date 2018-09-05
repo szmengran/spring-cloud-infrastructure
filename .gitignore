@@ -21,3 +21,4 @@ bin/
 cargo-installs/
 atlassian-ide-plugin.xml
 config_repo_git
+*/src/main/resources/native-repo/*

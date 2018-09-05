@@ -10,7 +10,7 @@ spring:
     config:
       server:
         native:
-          search-locations: classpath:/shared
+          search-locations: classpath:/native-repo #通过.gitingore配置本地配置库不提交
   profiles:
      active: dev
 ribbon:
