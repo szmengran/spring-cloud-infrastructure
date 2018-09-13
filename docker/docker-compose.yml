@@ -18,7 +18,7 @@ services:
     restart: always
     environment:
       - KAFKA_SERVER=$KAFKA_SERVER
-      - CONFIG_SERVER_ADDRESS=http://config:10001
+      - ENVIRONMENT=$ENVIRONMENT
     ports:
       - "8761:8761"
   gateway:
