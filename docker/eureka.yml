@@ -6,6 +6,7 @@ services:
     environment:
       - KAFKA_SERVER=$KAFKA_SERVER
       - ENVIRONMENT=$ENVIRONMENT
+      - CONFIG_SERVER_ADDRESS=http://config:10001
     ports:
      - "8761:8761"
 networks:
