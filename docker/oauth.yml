@@ -1,14 +1,15 @@
 version: '3.1'
 services:
-  eureka:
-    image: szmengran/eureka:$CLOUD_VERSION
+  oauth:
+    image: szmengran/oauth:$CLOUD_VERSION
     restart: always
     environment:
       - KAFKA_SERVER=$KAFKA_SERVER
-      - ENVIRONMENT=$ENVIRONMENT
+      - EUREKA_SERVER_ADDRESS=http://eureka:8761/eureka
       - CONFIG_SERVER_ADDRESS=http://config:10001
+      - ENVIRONMENT=$ENVIRONMENT
     ports:
-     - "8761:8761"
+     - 10002:10002
 networks:
   default:
     external:

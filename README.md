@@ -6,6 +6,9 @@
 * [cloud gateway](https://github.com/szmengran/cloud/tree/master/cloud-gateway) API网关
 * [cloud discovery](https://github.com/szmengran/cloud/tree/master/cloud-discovery) eureka服务注册中心
 * [cloud config](https://github.com/szmengran/cloud/tree/master/cloud-config) 配置中心
+* [cloud trace] 使用sleuth&zipkin组件实现分布式链路
+* [cloud ELK] 所有的日志文件发送的kafka，再有logbash将日志信息从kafka中读取到ES
+* [cloud ribbon] 通过ribbon组件实现负载均衡
 
 # 编译&运行
 
