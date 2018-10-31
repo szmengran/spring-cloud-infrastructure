@@ -191,7 +191,6 @@
 				<version>0.2.0-RC1</version>
 				<scope>runtime</scope>
 			</dependency>
-
 			<dependency>
 				<groupId>com.szmengran</groupId>
 				<artifactId>cloud-model-common</artifactId>
@@ -296,6 +295,7 @@
 		<module>gateway</module>
 		<module>eureka</module>
 		<module>oauth</module>
+		<module>mybatis</module>
 	</modules>
 	<build>
 		<plugins>

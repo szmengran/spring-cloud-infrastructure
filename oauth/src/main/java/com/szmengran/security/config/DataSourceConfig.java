@@ -32,13 +32,13 @@ public class DataSourceConfig {
     }
     
 	@Bean(initMethod = "init", name = "readDataSource")  
-    @ConfigurationProperties(prefix = "spring.datasource.druid.common.read")  
+    @ConfigurationProperties(prefix = "spring.datasource.druid.read")  
     public DataSource readDataSource(){  
         return DruidDataSourceBuilder.create().build();  
     }  
   
     @Bean(initMethod = "init", name = "writeDataSource")  
-    @ConfigurationProperties(prefix = "spring.datasource.druid.common.write")  
+    @ConfigurationProperties(prefix = "spring.datasource.druid.write")  
     public DataSource writeDataSource(){  
             return DruidDataSourceBuilder.create().build();  
     } 
