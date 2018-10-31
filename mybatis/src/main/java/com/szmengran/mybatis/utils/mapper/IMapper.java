@@ -17,7 +17,7 @@ import com.szmengran.mybatis.utils.SqlProviderUtils;
  * @date Oct 30, 2018 2:54:17 PM
  * @author <a href="mailto:android_li@sina.cn">Joe</a>
  */
-public interface IMapper {
+public interface IMapper<T>{
 	
 	/**
 	 * 插入数据
@@ -48,20 +48,36 @@ public interface IMapper {
 	 * @author <a href="mailto:android_li@sina.cn">Joe</a>
 	 */
 	@DeleteProvider(type = SqlProviderUtils.class, method = "deleteByConditions")
-	int deleteByConditions(String tableName, Map<String, Object> params) throws Exception;
+	int deleteByConditions(@Param("class") Class<?> cla, @Param("params") Map<String, Object> params) throws Exception;
 	
 	@DeleteProvider(type = SqlProviderUtils.class, method = "delete")
 	int delete(Object object) throws Exception;
 	
+	/**
+	 * 根据主键ID查询
+	 * @param object
+	 * @return
+	 * @throws Exception 
+	 * @author <a href="mailto:android_li@sina.cn">Joe</a>
+	 */
 	@SelectProvider(type = SqlProviderUtils.class, method = "findById")
-	<T> T findById(Object object) throws Exception;
+	T findById(T object) throws Exception;
 	
+	/**
+	 * 根据条件查询数据
+	 * @param cla
+	 * @param params
+	 * @param orderBy
+	 * @return
+	 * @throws Exception 
+	 * @author <a href="mailto:android_li@sina.cn">Joe</a>
+	 */
 	@SelectProvider(type = SqlProviderUtils.class, method = "findByConditions")
-	<T> List<T> findByConditions(@Param("class") Class<T> cla, @Param("params") Map<String, Object> params, @Param("orderBy") String orderBy) throws Exception;
+	List<T> findByConditions(@Param("class") Class<T> cla, @Param("params") Map<String, Object> params, @Param("orderBy") String orderBy) throws Exception;
 	
-	@SelectProvider(type = SqlProviderUtils.class, method = "findBySql")
-	<T> List<T> findBySql(Class<T> cla, @Param("sql") String sql, Map<String, Object> params) throws Exception;
+//	@SelectProvider(type = SqlProviderUtils.class, method = "findBySql")
+//	List<T> findBySql(@Param("class") Class<T> cla, @Param("sql") String sql, @Param("params") Map<String, Object> params) throws Exception;
 	
 	@UpdateProvider(type = SqlProviderUtils.class, method = "update")
-	int update(Object bean) throws Exception;
+	int update(Object object) throws Exception;
 }

@@ -112,6 +112,9 @@ public class ReflectHandler {
 		for(Class<?> clazz=object.getClass(); clazz != Object.class ; clazz = clazz.getSuperclass()){
 			Field[] fields=clazz.getDeclaredFields();
 			for(Field field:fields){
+				if("SerialVersionUID".equalsIgnoreCase(field.getName())){ //通过在运行时判断类的serialVersionUID来验证版本的一致性，不与实体表对应
+    				continue;
+    			}
 				set.add(field);
 			}
 		}

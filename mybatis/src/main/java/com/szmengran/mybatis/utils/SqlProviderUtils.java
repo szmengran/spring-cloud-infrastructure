@@ -109,19 +109,26 @@ public class SqlProviderUtils {
 	 * @throws Exception 
 	 * @author <a href="mailto:android_li@sina.cn">Joe</a>
 	 */
-	public String deleteByConditions(String tableName, Map<String, Object> params) throws Exception{
+	public String deleteByConditions(Map<String, Object> map) throws Exception{
+		@SuppressWarnings("unchecked")
+		Map<String, Object> params = (Map<String, Object>)map.get("params");
+		@SuppressWarnings("rawtypes")
+		String tableName = ((Class)map.get("class")).getSimpleName();
 		if (params == null || params.size() == 0) {
 			throw new Exception("不允许全表删除，请手动删除！");
 		}
 		Set<String> fields = params.keySet();
-		return new SQL(){
+		String strSql = new SQL(){
             {
             	DELETE_FROM(tableName);
                 for (String field: fields) {
-                	WHERE(field+" = #{"+field+"}");
+                	WHERE(field+" = #{params."+field+"}");
                 }
             }
         }.toString();
+        
+        LOGGER.debug("deleteByConditions sql: {}", strSql.toString());
+        return strSql;
 	}
 	
 	/**
@@ -152,7 +159,8 @@ public class SqlProviderUtils {
 	}
 	
 	public String findByConditions(Map<String, Object> map) throws Exception {
-		String tableName = map.get("class").getClass().getSimpleName();
+		@SuppressWarnings("rawtypes")
+		String tableName = ((Class)map.get("class")).getSimpleName();
 		@SuppressWarnings("unchecked")
 		Map<String, Object> params = (Map<String, Object>)map.get("params");
 		String orderBy = (String)map.get("orderBy");
@@ -163,14 +171,14 @@ public class SqlProviderUtils {
 		if (params != null && params.size() > 0) {
 			Set<String> fields = params.keySet();
 			for (String field: fields) {
-				strSql.append(field+" = #{"+field+"}");
+				strSql.append(" and ").append(field).append(" = #{params.").append(field).append("}");
             }
 		} 
 		
 		if (StringUtils.isNotBlank(orderBy)) {
-			strSql.append(orderBy);
+			strSql.append(" ").append(orderBy);
 		}
-		
+		LOGGER.debug("findByConditions sql: {}", strSql);
 		return strSql.toString();
 	}
 	
@@ -202,8 +210,8 @@ public class SqlProviderUtils {
 		return strSql.toString();
 	}
 	
-	public String update(Object bean) throws Exception{
-		Class<?> beanClass = bean.getClass();
+	public String update(Object object) throws Exception{
+		Class<?> beanClass = object.getClass();
 		String tableName = beanClass.getSimpleName();
 		Table table = beanClass.getAnnotation(Table.class);
 		String strKeys = table.key();
@@ -211,26 +219,25 @@ public class SqlProviderUtils {
 			throw new Exception("该对象【"+tableName+"】没有设置主键，不能使用该更新方法！");
 		}
 		StringBuilder strSql = new StringBuilder();
-		Set<Field> fields = ReflectHandler.getAllFields(bean);
+		Set<Field> fields = ReflectHandler.getAllFields(object);
 		strSql.append("update ").append(tableName).append(" set");
 		
 		String keys[] = strKeys.split(",");
-		StringBuilder fieldSql = new StringBuilder();
-		StringBuilder valueSql = new StringBuilder();
+		StringBuilder whereSql = new StringBuilder(" where 1=1");
 		for (Field field: fields) {
 			String name = field.getName();
-			fieldSql.append(name).append(",");
-			valueSql.append("#{").append(name).append("},");
+			Boolean flag = true;
+			for (String key: keys) {
+				if (key.equalsIgnoreCase(name)) { //主键不用更新
+					whereSql.append(" and ").append(key).append(" = ").append("#{").append(key).append("}");
+					flag = false;
+				}
+			}
+			if (flag) {
+				strSql.append(" ").append(name).append(" = ").append("#{").append(name).append("}").append(",");
+			}
 		}
-
-		// remove last ','
-		valueSql.deleteCharAt(valueSql.length() - 1);
-		fieldSql.deleteCharAt(fieldSql.length() - 1);
-		strSql.append(fieldSql).append(") values (").append(valueSql).append(")")
-		      .append(" where 1=1");
-		for (String key: keys) {
-			strSql.append(" and ").append(key).append(" = ").append("#{").append(key).append("}");
-		}
+		strSql.deleteCharAt(strSql.length() - 1).append(whereSql);
 		
 		LOGGER.debug("update sql: {}", strSql.toString());
 		return strSql.toString();
