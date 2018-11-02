@@ -1,6 +1,6 @@
 package com.szmengran.mybatis.utils;
 
-import java.lang.reflect.Field;
+import java.lang.reflect.Method;
 import java.text.MessageFormat;
 import java.util.List;
 import java.util.Map;
@@ -29,21 +29,21 @@ public class SqlProviderUtils {
 		int value = table.value();
 		
 		StringBuilder insertSql = new StringBuilder();
-		Set<Field> fields = ReflectHandler.getAllFields(object);
+		Map<String, Method> map = ReflectHandler.getFieldAndGetMethodFromObject(beanClass);
+		Set<String> fields = map.keySet();
 		insertSql.append("insert into ").append(tableName).append("(");
 		StringBuilder fieldSql = new StringBuilder();
 		StringBuilder valueSql = new StringBuilder();
-		for (Field field: fields) {
-			String name = field.getName();
+		for (String name: fields) {
 			switch (value) {
 				case Key.AUTOINCREMENT:
 					break;
 				case Key.SEQUENCE:
-					fieldSql.append(name).append(",");
+					fieldSql.append("`").append(name).append("`").append(",");
 					valueSql.append("#{").append("seq_").append(tableName).append(".nextval").append("},");
 					break;
 				default:
-					fieldSql.append(name).append(",");
+					fieldSql.append("`").append(name).append("`").append(",");
 					valueSql.append("#{").append(name).append("},");
 					break;
 			}
@@ -67,21 +67,22 @@ public class SqlProviderUtils {
 		int value = table.value();
 		
 		StringBuilder strSql = new StringBuilder();
-		Set<Field> fields = ReflectHandler.getAllFields(object);
 		strSql.append("insert into ").append(tableName).append("(");
 		StringBuilder fieldSql = new StringBuilder();
 		StringBuilder valueSql = new StringBuilder();
-		for (Field field: fields) {
-			String name = field.getName();
+		
+		Map<String, Method> methodMap = ReflectHandler.getFieldAndGetMethodFromObject(beanClass);
+		Set<String> fields = methodMap.keySet();
+		for (String name: fields) {
 			switch (value) {
 				case Key.AUTOINCREMENT:
 					break;
 				case Key.SEQUENCE:
-					fieldSql.append(name).append(",");
+					fieldSql.append("`").append(name).append("`").append(",");
 					valueSql.append("#{").append("seq_").append(tableName).append(".nextval").append("},");
 					break;
 				default:
-					fieldSql.append(name).append(",");
+					fieldSql.append("`").append(name).append("`").append(",");
 					valueSql.append("#'{'").append("list[{0}].").append(name).append("'}',");
 					break;
 			}
@@ -219,13 +220,14 @@ public class SqlProviderUtils {
 			throw new Exception("该对象【"+tableName+"】没有设置主键，不能使用该更新方法！");
 		}
 		StringBuilder strSql = new StringBuilder();
-		Set<Field> fields = ReflectHandler.getAllFields(object);
 		strSql.append("update ").append(tableName).append(" set");
 		
 		String keys[] = strKeys.split(",");
 		StringBuilder whereSql = new StringBuilder(" where 1=1");
-		for (Field field: fields) {
-			String name = field.getName();
+		
+		Map<String, Method> methodMap = ReflectHandler.getFieldAndGetMethodFromObject(beanClass);
+		Set<String> fields = methodMap.keySet();
+		for (String name: fields) {
 			Boolean flag = true;
 			for (String key: keys) {
 				if (key.equalsIgnoreCase(name)) { //主键不用更新
