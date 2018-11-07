@@ -26,8 +26,10 @@ public class SqlProviderUtils {
 		Class<?> beanClass = object.getClass();
 		String tableName = beanClass.getSimpleName();
 		Table table = beanClass.getAnnotation(Table.class);
-		int value = table.value();
-		
+		int value = 0;
+		if (table != null) {
+			value = table.value();
+		}
 		StringBuilder insertSql = new StringBuilder();
 		Map<String, Method> map = ReflectHandler.getFieldAndGetMethodFromObject(beanClass);
 		Set<String> fields = map.keySet();
