@@ -23,5 +23,5 @@ public @interface Table {
 	 *
 	 * @return
 	 */
-	String key();
+	String id();
 }

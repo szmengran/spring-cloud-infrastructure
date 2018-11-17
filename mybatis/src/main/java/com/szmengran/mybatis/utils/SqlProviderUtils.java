@@ -145,7 +145,7 @@ public class SqlProviderUtils {
 		Class<?> beanClass = bean.getClass();
 		String tableName = beanClass.getSimpleName();
 		Table table = beanClass.getAnnotation(Table.class);
-		String strKeys = table.key();
+		String strKeys = table.id();
 		if (StringUtils.isBlank(strKeys)) {
 			throw new Exception("该对象【"+tableName+"】没有设置主键，不能使用该删除方法！");
 		}
@@ -181,12 +181,24 @@ public class SqlProviderUtils {
 		if (StringUtils.isNotBlank(orderBy)) {
 			strSql.append(" ").append(orderBy);
 		}
+		
 		LOGGER.debug("findByConditions sql: {}", strSql);
 		return strSql.toString();
 	}
 	
 	public String findBySql(Map<String, Object> map) throws Exception {
-		String strSql = (String)map.get("sql");
+		String strSql = (String)map.get("strSql");
+		
+		@SuppressWarnings("unchecked")
+		Map<String, Object> params = (Map<String, Object>)map.get("params");
+		StringBuilder conditions = new StringBuilder();
+		if (params != null && params.size() > 0) {
+			Set<String> fields = params.keySet();
+			for (String field: fields) {
+				conditions.append(" and ").append(field).append(" = #{params.").append(field).append("}");
+            }
+		} 
+		strSql = strSql+conditions.toString();
 		LOGGER.debug("findBySql sql: {}", strSql);
 		return strSql;
 	}
@@ -195,7 +207,7 @@ public class SqlProviderUtils {
 		Class<?> beanClass = object.getClass();
 		String tableName = beanClass.getSimpleName();
 		Table table = beanClass.getAnnotation(Table.class);
-		String strKeys = table.key();
+		String strKeys = table.id();
 		if (StringUtils.isBlank(strKeys)) {
 			throw new Exception("该对象【"+tableName+"】没有设置主键，不能使用该方法！");
 		}
@@ -217,7 +229,7 @@ public class SqlProviderUtils {
 		Class<?> beanClass = object.getClass();
 		String tableName = beanClass.getSimpleName();
 		Table table = beanClass.getAnnotation(Table.class);
-		String strKeys = table.key();
+		String strKeys = table.id();
 		if (StringUtils.isBlank(strKeys)) {
 			throw new Exception("该对象【"+tableName+"】没有设置主键，不能使用该更新方法！");
 		}

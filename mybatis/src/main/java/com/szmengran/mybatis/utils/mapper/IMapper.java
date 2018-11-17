@@ -74,9 +74,9 @@ public interface IMapper<T>{
 	 */
 	@SelectProvider(type = SqlProviderUtils.class, method = "findByConditions")
 	List<T> findByConditions(@Param("class") Class<T> cla, @Param("params") Map<String, Object> params, @Param("orderBy") String orderBy) throws Exception;
-	
-//	@SelectProvider(type = SqlProviderUtils.class, method = "findBySql")
-//	List<T> findBySql(@Param("class") Class<T> cla, @Param("sql") String sql, @Param("params") Map<String, Object> params) throws Exception;
+
+	@SelectProvider(type = SqlProviderUtils.class, method = "findBySql")
+	List<T> findBySql(@Param("class") Class<T> cla, @Param("strSql") String strSql, @Param("params") Map<String, Object> params) throws Exception;
 	
 	@UpdateProvider(type = SqlProviderUtils.class, method = "update")
 	int update(Object object) throws Exception;
