@@ -6,7 +6,7 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.core.annotation.Order;
+import org.springframework.context.annotation.Primary;
 
 import com.alibaba.druid.spring.boot.autoconfigure.DruidDataSourceBuilder;
 import com.alibaba.druid.support.http.WebStatFilter;
@@ -18,7 +18,6 @@ import com.alibaba.druid.support.http.WebStatFilter;
  * @author <a href="mailto:android_li@sina.cn">Joe</a>
  */
 @Configuration
-@Order(-100)
 public class DataSourceConfig {
 
     @SuppressWarnings("rawtypes")
@@ -39,6 +38,7 @@ public class DataSourceConfig {
   
     @Bean(initMethod = "init", name = "writeDataSource")  
     @ConfigurationProperties(prefix = "spring.datasource.druid.write")  
+    @Primary
     public DataSource writeDataSource(){  
             return DruidDataSourceBuilder.create().build();  
     } 

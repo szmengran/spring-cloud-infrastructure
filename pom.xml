@@ -217,9 +217,14 @@
 				<version>${project.parent.version}</version>
 			</dependency>
 			<dependency>
+				<groupId>com.szmengran</groupId>
+				<artifactId>mybatis</artifactId>
+				<version>${project.parent.version}</version>
+			</dependency>
+			<dependency>
 				<groupId>mysql</groupId>
 				<artifactId>mysql-connector-java</artifactId>
-				<version>5.1.47</version>
+				<version>8.0.13</version>
 			</dependency>
 		</dependencies>
 	</dependencyManagement>
