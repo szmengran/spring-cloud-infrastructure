@@ -80,4 +80,7 @@ public interface IMapper<T>{
 	
 	@UpdateProvider(type = SqlProviderUtils.class, method = "update")
 	int update(Object object) throws Exception;
+	
+	@UpdateProvider(type = SqlProviderUtils.class, method = "execute")
+	int execute(@Param("strSql") String strSql, @Param("params") Map<String, Object> params) throws Exception;
 }

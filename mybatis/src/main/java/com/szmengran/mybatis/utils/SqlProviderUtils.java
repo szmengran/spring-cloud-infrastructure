@@ -7,9 +7,8 @@ import java.util.Map;
 import java.util.Set;
 
 import org.apache.commons.lang.StringUtils;
+import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.jdbc.SQL;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import com.szmengran.mybatis.utils.reflect.ReflectHandler;
 
@@ -20,7 +19,6 @@ import com.szmengran.mybatis.utils.reflect.ReflectHandler;
  * @author <a href="mailto:android_li@sina.cn">Joe</a>
  */
 public class SqlProviderUtils {
-	private static final Logger LOGGER = LoggerFactory.getLogger(SqlProviderUtils.class);
 
 	public String insert(Object object) throws Exception {
 		Class<?> beanClass = object.getClass();
@@ -33,7 +31,7 @@ public class SqlProviderUtils {
 		StringBuilder insertSql = new StringBuilder();
 		Map<String, Method> map = ReflectHandler.getFieldAndGetMethodFromObject(beanClass);
 		Set<String> fields = map.keySet();
-		insertSql.append("insert into ").append(tableName).append("(");
+		insertSql.append("INSERT INTO ").append(tableName).append("(");
 		StringBuilder fieldSql = new StringBuilder();
 		StringBuilder valueSql = new StringBuilder();
 		for (String name: fields) {
@@ -41,11 +39,11 @@ public class SqlProviderUtils {
 				case Key.AUTOINCREMENT:
 					break;
 				case Key.SEQUENCE:
-					fieldSql.append("`").append(name).append("`").append(",");
-					valueSql.append("#{").append("seq_").append(tableName).append(".nextval").append("},");
+					fieldSql.append(name).append(",");
+					valueSql.append("seq_").append(tableName).append(".nextval,");
 					break;
 				default:
-					fieldSql.append("`").append(name).append("`").append(",");
+					fieldSql.append(name).append(",");
 					valueSql.append("#{").append(name).append("},");
 					break;
 			}
@@ -54,11 +52,39 @@ public class SqlProviderUtils {
 		// remove last ','
 		valueSql.deleteCharAt(valueSql.length() - 1);
 		fieldSql.deleteCharAt(fieldSql.length() - 1);
-		insertSql.append(fieldSql).append(") values (").append(valueSql).append(") ");
-
-		LOGGER.debug("insert sql: {}", insertSql.toString());
+		insertSql.append(fieldSql).append(") VALUES (").append(valueSql).append(") ");
 		return insertSql.toString();
 	}
+	
+//	public <T> String insert(T object) throws Exception {
+//		Class<?> beanClass = object.getClass();
+//		String tableName = beanClass.getSimpleName();
+//		Table table = beanClass.getAnnotation(Table.class);
+//		int value = 0;
+//		if (table != null) {
+//			value = table.value();
+//		}
+//		Map<String, Method> map = ReflectHandler.getFieldAndGetMethodFromObject(beanClass);
+//		Set<String> fields = map.keySet();
+//		SqlTable  sqlTable = SqlTable.of(tableName);
+//		InsertDSL<T> insertDSL = SqlBuilder.insert(object)
+//	            .into(sqlTable);
+//		for (String name: fields) {
+//			switch (value) {
+//			case Key.AUTOINCREMENT:
+//				break;
+//			case Key.SEQUENCE:
+//				insertDSL.map(sqlTable.column(name)).toConstant(new StringBuilder("seq_").append(tableName).append(".nextval").toString());
+//				break;
+//			default:
+//				insertDSL.map(sqlTable.column(name)).toProperty(name);
+//				break;
+//			}
+//		}
+//		InsertStatementProvider<T> insertStatement = insertDSL.build().render(RenderingStrategy.MYBATIS3);
+//		LOG.debug("insert sql: {}", insertStatement.getInsertStatement());
+//		return insertStatement.getInsertStatement();
+//	}
 	
 	public String insertBatch(Map<String, List<Object>> map) throws Exception {
 		List<Object> list = map.get("list");
@@ -69,7 +95,7 @@ public class SqlProviderUtils {
 		int value = table.value();
 		
 		StringBuilder strSql = new StringBuilder();
-		strSql.append("insert into ").append(tableName).append("(");
+		strSql.append("INSERT INTO ").append(tableName).append("(");
 		StringBuilder fieldSql = new StringBuilder();
 		StringBuilder valueSql = new StringBuilder();
 		
@@ -77,30 +103,29 @@ public class SqlProviderUtils {
 		Set<String> fields = methodMap.keySet();
 		for (String name: fields) {
 			switch (value) {
-				case Key.AUTOINCREMENT:
-					break;
-				case Key.SEQUENCE:
-					fieldSql.append("`").append(name).append("`").append(",");
-					valueSql.append("#{").append("seq_").append(tableName).append(".nextval").append("},");
-					break;
-				default:
-					fieldSql.append("`").append(name).append("`").append(",");
-					valueSql.append("#'{'").append("list[{0}].").append(name).append("'}',");
-					break;
+			case Key.AUTOINCREMENT:
+				break;
+			case Key.SEQUENCE:
+				fieldSql.append(name).append(",");
+				valueSql.append("SEQ_").append(tableName).append(".NEXTVAL,");
+				break;
+			default:
+				fieldSql.append(name).append(",");
+				valueSql.append("#'{'").append("list[{0}].").append(name).append("'}',");
+				break;
 			}
 		}
 		
 		// remove last ','
 		valueSql.deleteCharAt(valueSql.length() - 1);
 		fieldSql.deleteCharAt(fieldSql.length() - 1);
-		strSql.append(fieldSql).append(") values");
+		strSql.append(fieldSql).append(") VALUES");
 		MessageFormat messageFormat = new MessageFormat(valueSql.toString());
 		for (int i = 0; i < list.size(); i++) {
 			strSql.append(" (").append(messageFormat.format(new Object[]{i})).append("),");
 		}
 		strSql.deleteCharAt(strSql.length()-1);
 		
-		LOGGER.debug("insertBatch sql: {}", strSql.toString());
 		return strSql.toString();
 	}
 	
@@ -130,7 +155,6 @@ public class SqlProviderUtils {
             }
         }.toString();
         
-        LOGGER.debug("deleteByConditions sql: {}", strSql.toString());
         return strSql;
 	}
 	
@@ -157,7 +181,6 @@ public class SqlProviderUtils {
 			strSql.append(" and ").append(key).append(" = ").append("#{").append(key).append("}");
 		}
 		
-		LOGGER.debug("delete sql: {}", strSql.toString());
 		return strSql.toString();
 	}
 	
@@ -182,7 +205,6 @@ public class SqlProviderUtils {
 			strSql.append(" ").append(orderBy);
 		}
 		
-		LOGGER.debug("findByConditions sql: {}", strSql);
 		return strSql.toString();
 	}
 	
@@ -199,7 +221,6 @@ public class SqlProviderUtils {
             }
 		} 
 		strSql = strSql+conditions.toString();
-		LOGGER.debug("findBySql sql: {}", strSql);
 		return strSql;
 	}
 	
@@ -221,7 +242,6 @@ public class SqlProviderUtils {
 		for (String key: keys) {
 			strSql.append(" and ").append(key).append(" = ").append("#{"+key+"}");
 		} 
-		LOGGER.debug("findById sql: {}", strSql.toString());
 		return strSql.toString();
 	}
 	
@@ -255,7 +275,10 @@ public class SqlProviderUtils {
 		}
 		strSql.deleteCharAt(strSql.length() - 1).append(whereSql);
 		
-		LOGGER.debug("update sql: {}", strSql.toString());
 		return strSql.toString();
+	}
+	
+	public String execute(@Param("strSql") String strSql) throws Exception {
+		return strSql;
 	}
 }
