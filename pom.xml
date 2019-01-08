@@ -15,7 +15,7 @@
 	<properties>
 		<orm.version>0.0.3</orm.version>
 		<bintray.package>cloud</bintray.package>
-		<netty.version>4.1.29.Final</netty.version>
+		<netty.version>4.1.32.Final</netty.version>
 		<spring-boot.version>2.0.5.RELEASE</spring-boot.version>
 		<spring-security-oauth2.version>2.2.1.RELEASE</spring-security-oauth2.version>
 		<donotreplacespring-cloud-contract.version>1.2.0.RELEASE</donotreplacespring-cloud-contract.version>
@@ -26,7 +26,7 @@
 		<surefire.plugin.version>2.19.1</surefire.plugin.version>
 		
 		<java.version>1.8</java.version>
-		<spring-cloud.version>Finchley.SR1</spring-cloud.version>
+		<spring-cloud.version>Finchley.RELEASE</spring-cloud.version>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 
 		<!-- Plugin versions -->
