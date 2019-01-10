@@ -1,6 +1,7 @@
 package com.szmengran.mybatis.utils;
 
-import java.lang.reflect.Method;
+import java.lang.annotation.Annotation;
+import java.lang.reflect.Field;
 import java.text.MessageFormat;
 import java.util.List;
 import java.util.Map;
@@ -19,108 +20,85 @@ import com.szmengran.mybatis.utils.reflect.ReflectHandler;
  * @author <a href="mailto:android_li@sina.cn">Joe</a>
  */
 public class SqlProviderUtils {
-
+	
+	/**
+	 * insert a row of data to table
+	 * @param object
+	 * @return
+	 * @throws Exception 
+	 * @author <a href="mailto:android_li@sina.cn">Joe</a>
+	 */
 	public String insert(Object object) throws Exception {
 		Class<?> beanClass = object.getClass();
 		String tableName = beanClass.getSimpleName();
-		Table table = beanClass.getAnnotation(Table.class);
-		int value = 0;
-		if (table != null) {
-			value = table.value();
-		}
-		StringBuilder insertSql = new StringBuilder();
-		Map<String, Method> map = ReflectHandler.getFieldAndGetMethodFromObject(beanClass);
-		Set<String> fields = map.keySet();
-		insertSql.append("INSERT INTO ").append(tableName).append("(");
-		StringBuilder fieldSql = new StringBuilder();
-		StringBuilder valueSql = new StringBuilder();
-		for (String name: fields) {
-			switch (value) {
-				case Key.AUTOINCREMENT:
-					break;
-				case Key.SEQUENCE:
-					fieldSql.append(name).append(",");
-					valueSql.append("seq_").append(tableName).append(".nextval,");
-					break;
-				default:
-					fieldSql.append(name).append(",");
-					valueSql.append("#{").append(name).append("},");
-					break;
+		return new SQL() {
+			{
+				INSERT_INTO(tableName);
+				Set<Field> fields = ReflectHandler.getAllFields(beanClass);
+				for (Field field: fields) {
+					String name = field.getName();
+					Annotation[] annotation = field.getAnnotations();
+					if (annotation.length > 0) {
+						GeneratedValue generatedValue = field.getAnnotation(GeneratedValue.class);
+						switch (generatedValue.strategy()) {
+							case IDENTITY:
+								break;
+							case SEQUENCE:
+								VALUES(name, generatedValue.generator()+".NEXTVAL");
+								break;
+							default:
+								VALUES(name, "#{"+name+"}");
+								break;
+						}
+					} else {
+						VALUES(name, "#{"+name+"}");
+					}
+				}
 			}
-		}
-
-		// remove last ','
-		valueSql.deleteCharAt(valueSql.length() - 1);
-		fieldSql.deleteCharAt(fieldSql.length() - 1);
-		insertSql.append(fieldSql).append(") VALUES (").append(valueSql).append(") ");
-		return insertSql.toString();
+		}.toString();
 	}
 	
-//	public <T> String insert(T object) throws Exception {
-//		Class<?> beanClass = object.getClass();
-//		String tableName = beanClass.getSimpleName();
-//		Table table = beanClass.getAnnotation(Table.class);
-//		int value = 0;
-//		if (table != null) {
-//			value = table.value();
-//		}
-//		Map<String, Method> map = ReflectHandler.getFieldAndGetMethodFromObject(beanClass);
-//		Set<String> fields = map.keySet();
-//		SqlTable  sqlTable = SqlTable.of(tableName);
-//		InsertDSL<T> insertDSL = SqlBuilder.insert(object)
-//	            .into(sqlTable);
-//		for (String name: fields) {
-//			switch (value) {
-//			case Key.AUTOINCREMENT:
-//				break;
-//			case Key.SEQUENCE:
-//				insertDSL.map(sqlTable.column(name)).toConstant(new StringBuilder("seq_").append(tableName).append(".nextval").toString());
-//				break;
-//			default:
-//				insertDSL.map(sqlTable.column(name)).toProperty(name);
-//				break;
-//			}
-//		}
-//		InsertStatementProvider<T> insertStatement = insertDSL.build().render(RenderingStrategy.MYBATIS3);
-//		LOG.debug("insert sql: {}", insertStatement.getInsertStatement());
-//		return insertStatement.getInsertStatement();
-//	}
-	
+	/**
+	 * insert batch row of data to table
+	 * @param map
+	 * @return
+	 * @throws Exception 
+	 * @author <a href="mailto:android_li@sina.cn">Joe</a>
+	 */
 	public String insertBatch(Map<String, List<Object>> map) throws Exception {
 		List<Object> list = map.get("list");
 		Object object = list.get(0);
 		Class<?> beanClass = object.getClass();
 		String tableName = beanClass.getSimpleName();
-		Table table = beanClass.getAnnotation(Table.class);
-		int value = table.value();
 		
-		StringBuilder strSql = new StringBuilder();
-		strSql.append("INSERT INTO ").append(tableName).append("(");
-		StringBuilder fieldSql = new StringBuilder();
-		StringBuilder valueSql = new StringBuilder();
-		
-		Map<String, Method> methodMap = ReflectHandler.getFieldAndGetMethodFromObject(beanClass);
-		Set<String> fields = methodMap.keySet();
-		for (String name: fields) {
-			switch (value) {
-			case Key.AUTOINCREMENT:
-				break;
-			case Key.SEQUENCE:
-				fieldSql.append(name).append(",");
-				valueSql.append("SEQ_").append(tableName).append(".NEXTVAL,");
-				break;
-			default:
-				fieldSql.append(name).append(",");
-				valueSql.append("#'{'").append("list[{0}].").append(name).append("'}',");
-				break;
+		String sql = new SQL() {
+			{
+				INSERT_INTO(tableName);
+				Set<Field> fields = ReflectHandler.getAllFields(beanClass);
+				for (Field field: fields) {
+					String name = field.getName();
+					Annotation[] annotation = field.getAnnotations();
+					if (annotation.length > 0) {
+						GeneratedValue generatedValue = field.getAnnotation(GeneratedValue.class);
+						switch (generatedValue.strategy()) {
+							case IDENTITY:
+								break;
+							case SEQUENCE:
+								VALUES(name, generatedValue.generator()+".NEXTVAL");
+								break;
+							default:
+								VALUES(name, "#{list[{0}]."+name+"}");
+								break;
+						}
+					} else {
+						VALUES(name, "#{list[{0}]."+name+"}");
+					}
+				}
 			}
-		}
+		}.toString();
 		
-		// remove last ','
-		valueSql.deleteCharAt(valueSql.length() - 1);
-		fieldSql.deleteCharAt(fieldSql.length() - 1);
-		strSql.append(fieldSql).append(") VALUES");
-		MessageFormat messageFormat = new MessageFormat(valueSql.toString());
+		StringBuilder strSql = new StringBuilder(sql);
+		MessageFormat messageFormat = new MessageFormat(strSql.toString());
 		for (int i = 0; i < list.size(); i++) {
 			strSql.append(" (").append(messageFormat.format(new Object[]{i})).append("),");
 		}
@@ -130,7 +108,7 @@ public class SqlProviderUtils {
 	}
 	
 	/**
-	 * 根据条件删除数据
+	 * delete data by conditions
 	 * @param tableName
 	 * @param params
 	 * @return
@@ -143,7 +121,7 @@ public class SqlProviderUtils {
 		@SuppressWarnings("rawtypes")
 		String tableName = ((Class)map.get("class")).getSimpleName();
 		if (params == null || params.size() == 0) {
-			throw new Exception("不允许全表删除，请手动删除！");
+			throw new Exception("do not allow full table delete!");
 		}
 		Set<String> fields = params.keySet();
 		String strSql = new SQL(){
@@ -159,7 +137,7 @@ public class SqlProviderUtils {
 	}
 	
 	/**
-	 * 根据对象的ID删除数据
+	 * delete data by primary key
 	 * @param bean
 	 * @return
 	 * @throws Exception 
@@ -171,43 +149,58 @@ public class SqlProviderUtils {
 		Table table = beanClass.getAnnotation(Table.class);
 		String strKeys = table.id();
 		if (StringUtils.isBlank(strKeys)) {
-			throw new Exception("该对象【"+tableName+"】没有设置主键，不能使用该删除方法！");
+			throw new Exception("The object "+beanClass.getName()+" has not yet she the primary key, can not use this method to delete data!");
 		}
-		StringBuilder strSql = new StringBuilder();
-		strSql.append("delete from ").append(tableName).append(" where 1=1");
-		
-		String keys[] = strKeys.split(",");
-		for (String key: keys) {
-			strSql.append(" and ").append(key).append(" = ").append("#{").append(key).append("}");
-		}
-		
-		return strSql.toString();
+		return new SQL() {
+			{
+				DELETE_FROM(tableName);
+				String keys[] = strKeys.split(",");
+				for (String key: keys) {
+					WHERE(key+"="+"#{"+key+"}");
+				}
+			}
+		}.toString();
 	}
 	
+	/**
+	 * find data by conditions
+	 * @param map
+	 * @return
+	 * @throws Exception 
+	 * @author <a href="mailto:android_li@sina.cn">Joe</a>
+	 */
 	public String findByConditions(Map<String, Object> map) throws Exception {
 		@SuppressWarnings("rawtypes")
 		String tableName = ((Class)map.get("class")).getSimpleName();
 		@SuppressWarnings("unchecked")
 		Map<String, Object> params = (Map<String, Object>)map.get("params");
 		String orderBy = (String)map.get("orderBy");
-		StringBuilder strSql = new StringBuilder();
-		strSql.append("select * from ")
-		      .append(tableName)
-		      .append(" where 1=1");
-		if (params != null && params.size() > 0) {
-			Set<String> fields = params.keySet();
-			for (String field: fields) {
-				strSql.append(" and ").append(field).append(" = #{params.").append(field).append("}");
-            }
-		} 
-		
+		SQL sql = new SQL() {
+			{
+				SELECT("*");
+				FROM(tableName);
+				if (params != null && params.size() > 0) {
+					Set<String> fields = params.keySet();
+					for (String field: fields) {
+						WHERE(field + " = #{params." + field + "}");
+		            }
+				}
+			}
+		};
+		StringBuilder strSql = new StringBuilder(sql.toString());
 		if (StringUtils.isNotBlank(orderBy)) {
 			strSql.append(" ").append(orderBy);
 		}
-		
 		return strSql.toString();
 	}
 	
+	/**
+	 * find data by sql and conditions
+	 * @param map
+	 * @return
+	 * @throws Exception 
+	 * @author <a href="mailto:android_li@sina.cn">Joe</a>
+	 */
 	public String findBySql(Map<String, Object> map) throws Exception {
 		String strSql = (String)map.get("strSql");
 		
@@ -224,60 +217,78 @@ public class SqlProviderUtils {
 		return strSql;
 	}
 	
+	/**
+	 * find data by primary key
+	 * @param object
+	 * @return
+	 * @throws Exception 
+	 * @author <a href="mailto:android_li@sina.cn">Joe</a>
+	 */
 	public String findById(Object object) throws Exception {
 		Class<?> beanClass = object.getClass();
 		String tableName = beanClass.getSimpleName();
 		Table table = beanClass.getAnnotation(Table.class);
 		String strKeys = table.id();
 		if (StringUtils.isBlank(strKeys)) {
-			throw new Exception("该对象【"+tableName+"】没有设置主键，不能使用该方法！");
+			throw new Exception("The object "+beanClass.getName()+" has not yet she the primary key, can not use this method to find data!");
 		}
 		
-		String keys[] = strKeys.split(",");
-		
-		StringBuilder strSql = new StringBuilder();
-		strSql.append("select * from ")
-		.append(tableName)
-		.append(" where 1=1");
-		for (String key: keys) {
-			strSql.append(" and ").append(key).append(" = ").append("#{"+key+"}");
-		} 
-		return strSql.toString();
+		return new SQL() {
+			{
+				SELECT("*");
+				FROM(tableName);
+				String keys[] = strKeys.split(",");
+				for (String key: keys) {
+					WHERE(key+"="+"#{"+key+"}");
+				}
+			}
+		}.toString();
 	}
 	
+	/**
+	 * update data by primary key
+	 * @param object
+	 * @return
+	 * @throws Exception 
+	 * @author <a href="mailto:android_li@sina.cn">Joe</a>
+	 */
 	public String update(Object object) throws Exception{
 		Class<?> beanClass = object.getClass();
 		String tableName = beanClass.getSimpleName();
 		Table table = beanClass.getAnnotation(Table.class);
 		String strKeys = table.id();
 		if (StringUtils.isBlank(strKeys)) {
-			throw new Exception("该对象【"+tableName+"】没有设置主键，不能使用该更新方法！");
+			throw new Exception("The object "+beanClass.getName()+" has not yet she the primary key, can not use this method to up data!");
 		}
-		StringBuilder strSql = new StringBuilder();
-		strSql.append("update ").append(tableName).append(" set");
-		
-		String keys[] = strKeys.split(",");
-		StringBuilder whereSql = new StringBuilder(" where 1=1");
-		
-		Map<String, Method> methodMap = ReflectHandler.getFieldAndGetMethodFromObject(beanClass);
-		Set<String> fields = methodMap.keySet();
-		for (String name: fields) {
-			Boolean flag = true;
-			for (String key: keys) {
-				if (key.equalsIgnoreCase(name)) { //主键不用更新
-					whereSql.append(" and ").append(key).append(" = ").append("#{").append(key).append("}");
-					flag = false;
+		return new SQL() {
+			{
+				UPDATE(tableName);
+				Set<Field> fields = ReflectHandler.getAllFields(beanClass);
+				String keys[] = strKeys.split(",");
+				for (Field field: fields) {
+					String name = field.getName();
+					Boolean flag = true;
+					for (String key: keys) {
+						if (key.equalsIgnoreCase(name)) { //主键不用更新
+							WHERE(key+"="+"#{"+key+"}");
+							flag = false;
+						}
+					}
+					if (flag) {
+						SET(name, "#{"+name+"}");
+					}
 				}
 			}
-			if (flag) {
-				strSql.append(" ").append(name).append(" = ").append("#{").append(name).append("}").append(",");
-			}
-		}
-		strSql.deleteCharAt(strSql.length() - 1).append(whereSql);
-		
-		return strSql.toString();
+		}.toString();
 	}
 	
+	/**
+	 * execute sql
+	 * @param strSql
+	 * @return
+	 * @throws Exception 
+	 * @author <a href="mailto:android_li@sina.cn">Joe</a>
+	 */
 	public String execute(@Param("strSql") String strSql) throws Exception {
 		return strSql;
 	}

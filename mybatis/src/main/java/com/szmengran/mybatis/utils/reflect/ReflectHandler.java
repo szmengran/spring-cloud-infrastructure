@@ -118,17 +118,23 @@ public class ReflectHandler {
 		if(set != null){
 			return set;
 		}
-		set = new HashSet<Field>();
-		for(Class<?> clazz = cla; clazz != Object.class; clazz = clazz.getSuperclass()){
-			Field[] fields=clazz.getDeclaredFields();
-			for(Field field: fields){
-				if ("SerialVersionUID".equalsIgnoreCase(field.getName())) { //通过在运行时判断类的serialVersionUID来验证版本的一致性，不与实体表对应
-    				continue;
-    			}
-				set.add(field);
+		synchronized (ReflectHandler.class) {
+			set = ClassInfoCache.getAllFieldsFromObject(cla);
+			if(set != null){
+				return set;
 			}
+			set = new HashSet<Field>();
+			for(Class<?> clazz = cla; clazz != Object.class; clazz = clazz.getSuperclass()){
+				Field[] fields=clazz.getDeclaredFields();
+				for(Field field: fields){
+					if ("SerialVersionUID".equalsIgnoreCase(field.getName())) { //通过在运行时判断类的serialVersionUID来验证版本的一致性，不与实体表对应
+	    				continue;
+	    			}
+					set.add(field);
+				}
+			}
+			ClassInfoCache.putAllFieldsToObject(cla, set);
 		}
-		ClassInfoCache.putAllFieldsToObject(cla, set);
 		return set;
 	}
 	

@@ -5,7 +5,7 @@ import java.util.concurrent.ConcurrentHashMap;
 /**
  * 
  * @ClassName: DataCache 
- * @Description: 数据缓存
+ * @Description: data cache
  * @author <a href="mailto:android_li@sina.cn">LiMaoYuan</a>
  * @date 2016年10月26日 下午4:24:18 
  *
@@ -20,7 +20,7 @@ public class DataCache {
 	
 	/**
 	 * 
-	 * @Description: 缓存一个值
+	 * @Description: cache data
 	 * @author <a href="mailto:android_li@sina.cn">LiMaoYuan</a>
 	 * @date 2016年10月26日 下午4:24:48 
 	 * 
@@ -33,7 +33,7 @@ public class DataCache {
 	
 	/**
 	 * 
-	 * @Description: 获取一个值 
+	 * @Description: get data from cache
 	 * @author <a href="mailto:android_li@sina.cn">LiMaoYuan</a>
 	 * @date 2016年10月26日 下午4:25:07 
 	 * 

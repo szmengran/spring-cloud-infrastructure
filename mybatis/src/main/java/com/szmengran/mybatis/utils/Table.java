@@ -8,7 +8,7 @@ import java.lang.annotation.Target;
 
 /**
  * @Package com.szmengran.mybatis.utils
- * @Description: TODO
+ * @Description: table annotation
  * @date Oct 30, 2018 10:28:50 PM
  * @author <a href="mailto:android_li@sina.cn">Joe</a>
  */
@@ -16,12 +16,11 @@ import java.lang.annotation.Target;
 @Retention(RetentionPolicy.RUNTIME)
 @Target({ ElementType.TYPE })
 public @interface Table {
-	int value() default 0;
 
 	/**
-	 * 当前表的主键
-	 *
+	 * setting primary key
+	 * The combined primary keys are separated by commas
 	 * @return
 	 */
-	String id();
+	String id() default "";
 }
