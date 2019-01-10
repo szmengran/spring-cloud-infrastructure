@@ -156,7 +156,7 @@ public class SqlProviderUtils {
 				DELETE_FROM(tableName);
 				String keys[] = strKeys.split(",");
 				for (String key: keys) {
-					WHERE(key+"="+"#{"+key+"}");
+					WHERE(key+" = #{"+key+"}");
 				}
 			}
 		}.toString();
@@ -239,7 +239,7 @@ public class SqlProviderUtils {
 				FROM(tableName);
 				String keys[] = strKeys.split(",");
 				for (String key: keys) {
-					WHERE(key+"="+"#{"+key+"}");
+					WHERE(key+" = #{"+key+"}");
 				}
 			}
 		}.toString();
@@ -270,12 +270,12 @@ public class SqlProviderUtils {
 					Boolean flag = true;
 					for (String key: keys) {
 						if (key.equalsIgnoreCase(name)) { //主键不用更新
-							WHERE(key+"="+"#{"+key+"}");
+							WHERE(key+" = #{"+key+"}");
 							flag = false;
 						}
 					}
 					if (flag) {
-						SET(name, "#{"+name+"}");
+						SET(name+" = #{"+name+"}");
 					}
 				}
 			}
