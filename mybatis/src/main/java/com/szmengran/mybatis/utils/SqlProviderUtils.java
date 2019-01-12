@@ -71,39 +71,43 @@ public class SqlProviderUtils {
 		Class<?> beanClass = object.getClass();
 		String tableName = beanClass.getSimpleName();
 		
-		String sql = new SQL() {
-			{
-				INSERT_INTO(tableName);
-				Set<Field> fields = ReflectHandler.getAllFields(beanClass);
-				for (Field field: fields) {
-					String name = field.getName();
-					Annotation[] annotation = field.getAnnotations();
-					if (annotation.length > 0) {
-						GeneratedValue generatedValue = field.getAnnotation(GeneratedValue.class);
-						switch (generatedValue.strategy()) {
-							case IDENTITY:
-								break;
-							case SEQUENCE:
-								VALUES(name, generatedValue.generator()+".NEXTVAL");
-								break;
-							default:
-								VALUES(name, "#{list[{0}]."+name+"}");
-								break;
-						}
-					} else {
-						VALUES(name, "#{list[{0}]."+name+"}");
-					}
+		StringBuilder strSql = new StringBuilder();
+		strSql.append("INSERT INTO ").append(tableName).append("(");
+		StringBuilder fieldSql = new StringBuilder();
+		StringBuilder valueSql = new StringBuilder();
+		
+		Set<Field> fields = ReflectHandler.getAllFields(beanClass);
+		for (Field field: fields) {
+			String name = field.getName();
+			Annotation[] annotation = field.getAnnotations();
+			if (annotation.length > 0) {
+				GeneratedValue generatedValue = field.getAnnotation(GeneratedValue.class);
+				switch (generatedValue.strategy()) {
+					case IDENTITY:
+						break;
+					case SEQUENCE:
+						fieldSql.append(",").append(name);
+						valueSql.append(",").append(generatedValue.generator()+".NEXTVAL");
+						break;
+					default:
+						fieldSql.append(",").append(name);
+						valueSql.append(",#'{'").append("list[{0}].").append(name).append("'}'");
+						break;
 				}
+			} else {
+				fieldSql.append(",").append(name);
+				valueSql.append(",#'{'").append("list[{0}].").append(name).append("'}'");
 			}
-		}.toString();
-		
-		StringBuilder strSql = new StringBuilder(sql);
-		MessageFormat messageFormat = new MessageFormat(strSql.toString());
-		for (int i = 0; i < list.size(); i++) {
-			strSql.append(" (").append(messageFormat.format(new Object[]{i})).append("),");
 		}
-		strSql.deleteCharAt(strSql.length()-1);
 		
+		valueSql.deleteCharAt(0);
+		fieldSql.deleteCharAt(0);
+		strSql.append(fieldSql).append(") VALUES ");
+		MessageFormat messageFormat = new MessageFormat(valueSql.toString());
+		for (int i = 0; i < list.size(); i++) {
+			strSql.append("(").append(messageFormat.format(new Object[]{i})).append("),");
+		}
+		strSql.deleteCharAt(strSql.length() - 1);
 		return strSql.toString();
 	}
 	

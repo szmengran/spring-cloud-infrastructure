@@ -37,7 +37,7 @@ public interface IMapper<T>{
 	 * @author <a href="mailto:android_li@sina.cn">Joe</a>
 	 */
 	@InsertProvider(type = SqlProviderUtils.class, method = "insertBatch")
-	int insertBatch(List<Object> list) throws Exception;
+	int insertBatch(List<T> list) throws Exception;
 	
 	/**
 	 * delete data by conditions
