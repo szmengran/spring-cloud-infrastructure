@@ -179,7 +179,7 @@ public class SqlProviderUtils {
 		@SuppressWarnings("unchecked")
 		Map<String, Object> params = (Map<String, Object>)map.get("params");
 		String orderBy = (String)map.get("orderBy");
-		SQL sql = new SQL() {
+		return new SQL() {
 			{
 				SELECT("*");
 				FROM(tableName);
@@ -189,13 +189,11 @@ public class SqlProviderUtils {
 						WHERE(field + " = #{params." + field + "}");
 		            }
 				}
+				if (StringUtils.isNotBlank(orderBy)) {
+					ORDER_BY(orderBy);
+				}
 			}
-		};
-		StringBuilder strSql = new StringBuilder(sql.toString());
-		if (StringUtils.isNotBlank(orderBy)) {
-			strSql.append(" ").append(orderBy);
-		}
-		return strSql.toString();
+		}.toString();
 	}
 	
 	/**
