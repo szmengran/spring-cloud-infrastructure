@@ -15,8 +15,9 @@ eureka:
   client:
     registerWithEureka: false
     fetchRegistry: false
-    server:
-      waitTimeInMsWhenSyncEmpty: 0
+  server:
+    waitTimeInMsWhenSyncEmpty: 0
+    eviction-interval-timer-in-ms: 5000       # 续期时间，即扫描失效服务的间隔时间（缺省为60*1000ms）
     serviceUrl:
       defaultZone: http://${eureka.instance.hostname}:${server.port}/eureka/
   environment: ${ENVIRONMENT}
