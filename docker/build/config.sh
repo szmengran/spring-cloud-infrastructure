@@ -11,10 +11,10 @@ set -e
 
 # Docker image prefix
 REGPREFIX=szmengran
-VERSION=$CLOUD_VERSION
+VERSION=$INFRASTRUCTURE_VERSION
 
 cd ../config
 mvn package
 progress "Building config image ..."
-docker tag $(docker build -t ${REGPREFIX}/config -q .) ${REGPREFIX}/config:${VERSION}
+docker tag $(docker build -t ${REGPREFIX}/config -q .) ${REGPREFIX}/config:$INFRASTRUCTURE_VERSION
 cd -

@@ -4,6 +4,8 @@ eureka:
   client:
     serviceUrl:
       defaultZone: ${EUREKA_SERVER_ADDRESS}
+  server:
+    peer-node-read-timeout-ms: 6000
 server:
   port: 10000
 spring:
@@ -28,5 +30,3 @@ endpoints:
     enabled: true
   health:
     sensitive: false
-logging:
-  config: ${CONFIG_SERVER_ADDRESS}/resources/logback-spring.xml

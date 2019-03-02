@@ -12,7 +12,7 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
-import org.apache.commons.lang.StringUtils;
+import org.springframework.util.StringUtils;
 
 import com.szmengran.mybatis.utils.cache.ClassInfoCache;
 
@@ -154,7 +154,7 @@ public class ReflectHandler {
 		//只要一个参数 
 		String xclass = ts[0].toString(); 
 		//判断参数类型 
-		if (StringUtils.isBlank(strValue)) {
+		if (StringUtils.isEmpty(strValue)) {
 			return;
 		} else if (xclass.equals("class java.lang.String")) { 
 			setMethod.invoke(object, strValue); 

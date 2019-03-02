@@ -6,8 +6,6 @@ eureka:
       defaultZone: ${EUREKA_SERVER_ADDRESS}
 server:
   port: 10002
-logging:
-  config: ${CONFIG_SERVER_ADDRESS}/resources/logback-spring.xml
 spring:
   application:
     name: oauth

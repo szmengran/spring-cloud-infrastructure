@@ -6,8 +6,6 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
-import com.thoughtworks.xstream.core.SequenceGenerator;
-
 /**
  * @Package com.szmengran.mybatis.utils
  * @Description: data generate value

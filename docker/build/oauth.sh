@@ -11,7 +11,7 @@ set -e
 
 # Docker image prefix
 REGPREFIX=szmengran
-VERSION=$CLOUD_VERSION
+VERSION=$INFRASTRUCTURE_VERSION
 
 cd ../oauth
 mvn package

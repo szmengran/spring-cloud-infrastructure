@@ -7,7 +7,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import org.apache.commons.lang.StringUtils;
+import org.springframework.util.StringUtils;
 import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.jdbc.SQL;
 
@@ -152,7 +152,7 @@ public class SqlProviderUtils {
 		String tableName = beanClass.getSimpleName();
 		Table table = beanClass.getAnnotation(Table.class);
 		String strKeys = table.id();
-		if (StringUtils.isBlank(strKeys)) {
+		if (StringUtils.isEmpty(strKeys)) {
 			throw new Exception("The object "+beanClass.getName()+" has not yet she the primary key, can not use this method to delete data!");
 		}
 		return new SQL() {
@@ -189,7 +189,7 @@ public class SqlProviderUtils {
 						WHERE(field + " = #{params." + field + "}");
 		            }
 				}
-				if (StringUtils.isNotBlank(orderBy)) {
+				if (!StringUtils.isEmpty(orderBy)) {
 					ORDER_BY(orderBy);
 				}
 			}
@@ -231,7 +231,7 @@ public class SqlProviderUtils {
 		String tableName = beanClass.getSimpleName();
 		Table table = beanClass.getAnnotation(Table.class);
 		String strKeys = table.id();
-		if (StringUtils.isBlank(strKeys)) {
+		if (StringUtils.isEmpty(strKeys)) {
 			throw new Exception("The object "+beanClass.getName()+" has not yet she the primary key, can not use this method to find data!");
 		}
 		
@@ -259,7 +259,7 @@ public class SqlProviderUtils {
 		String tableName = beanClass.getSimpleName();
 		Table table = beanClass.getAnnotation(Table.class);
 		String strKeys = table.id();
-		if (StringUtils.isBlank(strKeys)) {
+		if (StringUtils.isEmpty(strKeys)) {
 			throw new Exception("The object "+beanClass.getName()+" has not yet she the primary key, can not use this method to up data!");
 		}
 		return new SQL() {

@@ -4,8 +4,11 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>com.szmengran</groupId>
 	<artifactId>spring-cloud-infrastructure</artifactId>
-	<version>0.0.2</version>
+	<version>0.0.3</version>
 	<packaging>pom</packaging>
+	<!-- 
+    	version set command: mvn versions:set -DgenerateBackupPoms=false
+     -->
 	<parent>
 		<groupId>org.springframework.boot</groupId>
 		<artifactId>spring-boot-starter-parent</artifactId>
@@ -38,7 +41,8 @@
 		<pagehelper.version>5.1.8</pagehelper.version>
 
 		<zipkin.version>2.12.2</zipkin.version>
-		<logstash.version>5.1</logstash.version>
+		<logstash.version>5.3</logstash.version>
+		<ch.qos.logback.version>1.2.3</ch.qos.logback.version>
 
 		<!-- aliyun -->
 		<druid-spring-boot-starter.version>1.1.10</druid-spring-boot-starter.version>
@@ -198,36 +202,21 @@
 				<artifactId>logstash-logback-encoder</artifactId>
 				<version>${logstash.version}</version>
 			</dependency>
-			<dependency>
-				<groupId>com.szmengran</groupId>
-				<artifactId>cloud-model-common</artifactId>
-				<version>${project.parent.version}</version>
-			</dependency>
-			<dependency>
-				<groupId>com.szmengran</groupId>
-				<artifactId>cloud-common-utils</artifactId>
-				<version>${project.parent.version}</version>
-			</dependency>
-			<dependency>
-				<groupId>com.szmengran</groupId>
-				<artifactId>cloud-model-suntak</artifactId>
-				<version>${project.parent.version}</version>
-			</dependency>
-			<dependency>
-				<groupId>com.szmengran</groupId>
-				<artifactId>cloud-exception</artifactId>
-				<version>${project.parent.version}</version>
-			</dependency>
-			<dependency>
-				<groupId>com.szmengran</groupId>
-				<artifactId>cloud-model-admin</artifactId>
-				<version>${project.parent.version}</version>
-			</dependency>
-			<dependency>
-				<groupId>com.szmengran</groupId>
-				<artifactId>mybatis</artifactId>
-				<version>${project.parent.version}</version>
-			</dependency>
+            <dependency>
+                <groupId>ch.qos.logback</groupId>
+                <artifactId>logback-core</artifactId>
+                <version>${ch.qos.logback.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>ch.qos.logback</groupId>
+                <artifactId>logback-classic</artifactId>
+                <version>${ch.qos.logback.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>ch.qos.logback</groupId>
+                <artifactId>logback-access</artifactId>
+                <version>${ch.qos.logback.version}</version>
+            </dependency>
 			<dependency>
 				<groupId>mysql</groupId>
 				<artifactId>mysql-connector-java</artifactId>
@@ -237,6 +226,20 @@
 	</dependencyManagement>
 	<dependencies>
 		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-web</artifactId>
+			<exclusions>
+				<exclusion>
+					<groupId>org.springframework.boot</groupId>
+					<artifactId>spring-boot-starter-tomcat</artifactId>
+				</exclusion>
+			</exclusions>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-undertow</artifactId>
+		</dependency>
+		<!-- <dependency>
 			<groupId>org.springframework.cloud</groupId>
 			<artifactId>spring-cloud-starter-config</artifactId>
 		</dependency>
@@ -247,6 +250,16 @@
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-web</artifactId>
+			<exclusions>
+				<exclusion>
+					<groupId>org.springframework.boot</groupId>
+					<artifactId>spring-boot-starter-tomcat</artifactId>
+				</exclusion>
+			</exclusions>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-undertow</artifactId>
 		</dependency>
 		<dependency>
 			<groupId>org.springframework.cloud</groupId>
@@ -272,9 +285,9 @@
 		<dependency>
 			<groupId>com.fasterxml.jackson.core</groupId>
 			<artifactId>jackson-databind</artifactId>
-		</dependency>
+		</dependency> -->
 		<!-- *********************sleuth+zipkin+kafka+logback+elk repo begin*********************** -->
-		<dependency>
+		<!-- <dependency>
 			<groupId>org.springframework.cloud</groupId>
 			<artifactId>spring-cloud-starter-stream-kafka</artifactId>
 		</dependency>
@@ -303,7 +316,7 @@
 		<dependency>
 			<groupId>ch.qos.logback</groupId>
 			<artifactId>logback-core</artifactId>
-		</dependency>
+		</dependency> -->
 		<!-- *********************sleuth+zipkin+kafka+logback+elk repo end*********************** -->
 	</dependencies>
 	<modules>
