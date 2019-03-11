@@ -21,16 +21,16 @@ import com.alibaba.druid.support.http.WebStatFilter;
 public class DataSourceConfig {
 
     @SuppressWarnings("rawtypes")
-	@Bean
+    @Bean
     public FilterRegistrationBean filterRegistrationBean() {
         @SuppressWarnings("unchecked")
-		FilterRegistrationBean filterRegistrationBean = new FilterRegistrationBean(new WebStatFilter());
+        FilterRegistrationBean filterRegistrationBean = new FilterRegistrationBean(new WebStatFilter());
         filterRegistrationBean.addUrlPatterns("/*");
         filterRegistrationBean.addInitParameter("exclusions", "*.js,*.gif,*.jpg,*.png,*.css,*.ico,/druid/*,swagger-ui.html*");
         return filterRegistrationBean;
     }
     
-	@Bean(initMethod = "init", name = "readDataSource")  
+    @Bean(initMethod = "init", name = "readDataSource")  
     @ConfigurationProperties(prefix = "spring.datasource.druid.read")  
     public DataSource readDataSource(){  
         return DruidDataSourceBuilder.create().build();  
@@ -40,6 +40,6 @@ public class DataSourceConfig {
     @ConfigurationProperties(prefix = "spring.datasource.druid.write")  
     @Primary
     public DataSource writeDataSource(){  
-            return DruidDataSourceBuilder.create().build();  
+        return DruidDataSourceBuilder.create().build();  
     } 
 }

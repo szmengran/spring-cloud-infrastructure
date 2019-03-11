@@ -34,26 +34,26 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
         return new RedisTokenStore(connectionFactory);
     }
 
-	@Bean
-	public BCryptPasswordEncoder passwordEncoder() {
-		return new BCryptPasswordEncoder();
-	}
+    @Bean
+    public BCryptPasswordEncoder passwordEncoder() {
+        return new BCryptPasswordEncoder();
+    }
 
-	@Bean
-	public UserDetailsService userDetailsService() {
-		return new UserService();
-	}
+    @Bean
+    public UserDetailsService userDetailsService() {
+        return new UserService();
+    }
 
-	@Override
+    @Override
     public void configure(AuthorizationServerEndpointsConfigurer endpoints) throws Exception {
-    		try {
-    			endpoints
+            try {
+                endpoints
                 .authenticationManager(authenticationManager)
                 .userDetailsService(userDetailsService())//若无，refresh_token会有UserDetailsService is required错误
                 .tokenStore(tokenStore());
-    		}catch(Exception e) {
-    			e.printStackTrace();
-    		}
+            }catch(Exception e) {
+                e.printStackTrace();
+            }
     }
 
     @Override
@@ -66,6 +66,6 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
     @Override
     public void configure(ClientDetailsServiceConfigurer clients) throws Exception {
         clients.jdbc(this.writeDataSource)
-		.passwordEncoder(passwordEncoder());
+        .passwordEncoder(passwordEncoder());
     }
 }

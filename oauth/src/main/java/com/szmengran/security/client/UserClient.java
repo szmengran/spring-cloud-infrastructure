@@ -14,14 +14,14 @@ import com.szmengran.security.entity.User;
  */
 @FeignClient(name = "user")
 public interface UserClient {
-	
-	/**
-	 * get user info by username
-	 * @param username
-	 * @return
-	 * @throws Exception 
-	 * @author <a href="mailto:android_li@sina.cn">Joe</a>
-	 */
-	@GetMapping(value = "/api/v1/user/{username}")
-	public User loadUserByUsername(@PathVariable("username") String username) throws Exception;
+    
+    /**
+     * get user info by username
+     * @param username
+     * @return
+     * @throws Exception 
+     * @author <a href="mailto:android_li@sina.cn">Joe</a>
+     */
+    @GetMapping(value = "/api/v1/user/{username}")
+    public User loadUserByUsername(@PathVariable("username") String username) throws Exception;
 }

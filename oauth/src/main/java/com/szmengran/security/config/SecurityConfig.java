@@ -13,21 +13,21 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 @Configuration
 @EnableWebSecurity
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
-	
-	@Autowired
-	private UserDetailsService userDetailsService;
-	
-//	@Bean
-//	public UserDetailsService userDetailsService() {
-//		return new UserService();
-//	}
+    
+    @Autowired
+    private UserDetailsService userDetailsService;
+    
+//    @Bean
+//    public UserDetailsService userDetailsService() {
+//        return new UserService();
+//    }
 
-	@Override
-	protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-		auth.userDetailsService(userDetailsService).passwordEncoder(new BCryptPasswordEncoder());
-	}
-	
-//	@Override
+    @Override
+    protected void configure(AuthenticationManagerBuilder auth) throws Exception {
+        auth.userDetailsService(userDetailsService).passwordEncoder(new BCryptPasswordEncoder());
+    }
+    
+//    @Override
 //    protected void configure(HttpSecurity http) throws Exception {
 //        http
 //            .authorizeRequests()
@@ -42,16 +42,16 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 //                .permitAll();
 //    }
 //
-//	@Bean
-//	public SecurityEvaluationContextExtension securityEvaluationContextExtension() {
-//		return new SecurityEvaluationContextExtension();
-//	}
+//    @Bean
+//    public SecurityEvaluationContextExtension securityEvaluationContextExtension() {
+//        return new SecurityEvaluationContextExtension();
+//    }
 
-	// 不定义没有password grant_type
-	@Override
-	@Bean
-	public AuthenticationManager authenticationManagerBean() throws Exception {
-		return super.authenticationManagerBean();
-	}
+    // 不定义没有password grant_type
+    @Override
+    @Bean
+    public AuthenticationManager authenticationManagerBean() throws Exception {
+        return super.authenticationManagerBean();
+    }
 
 }

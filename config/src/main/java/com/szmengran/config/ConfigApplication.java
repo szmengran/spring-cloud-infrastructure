@@ -13,7 +13,8 @@ import org.springframework.cloud.context.config.annotation.RefreshScope;
 @RefreshScope
 public class ConfigApplication {
 
-	public static void main(String[] args) {
-		SpringApplication.run(ConfigApplication.class, args);
-	}
+    public static void main(String[] args) {
+        SpringApplication.run(ConfigApplication.class, args);
+    }
+    
 }

@@ -11,7 +11,7 @@ import org.springframework.cloud.openfeign.EnableFeignClients;
 @RefreshScope
 public class OauthApplication{
 
-	public static void main(String[] args) {
-		SpringApplication.run(OauthApplication.class, args);
-	}
+    public static void main(String[] args) {
+        SpringApplication.run(OauthApplication.class, args);
+    }
 }

@@ -23,16 +23,25 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 public class ResouceController {
 
-	@GetMapping("/resources/{fileName}")
-	public String downloadFile(HttpServletRequest request, HttpServletResponse response, @PathVariable("fileName") String fileName) throws Exception {
-	    if (fileName != null) {
-	    	response.setContentType("application/force-download");// 设置强制下载不打开
+    /**
+     * download file
+     * @param request
+     * @param response
+     * @param fileName
+     * @return
+     * @throws Exception 
+     * @author <a href="mailto:android_li@sina.cn">Joe</a>
+     */
+    @GetMapping("/resources/{fileName}")
+    public String downloadFile(HttpServletRequest request, HttpServletResponse response, @PathVariable("fileName") String fileName) throws Exception {
+        if (null != fileName) {
+            response.setContentType("application/force-download");// 设置强制下载不打开
             response.addHeader("Content-Disposition", "attachment;fileName=" + fileName);// 设置文件名
             byte[] buffer = new byte[1024];
             InputStream in = null; 
             BufferedInputStream bis = null;
             try {
-            	in = getClass().getResourceAsStream("/"+fileName); 
+                in = getClass().getResourceAsStream("/"+fileName); 
                 bis = new BufferedInputStream(in);
                 OutputStream os = response.getOutputStream();
                 int i = bis.read(buffer);
@@ -43,14 +52,14 @@ public class ResouceController {
             } catch (Exception e) {
                 e.printStackTrace();
             } finally {
-                if (bis != null) {
+                if (null != bis) {
                     try {
                         bis.close();
                     } catch (IOException e) {
                         e.printStackTrace();
                     }
                 }
-                if (in != null) {
+                if (null != in) {
                     try {
                         in.close();
                     } catch (IOException e) {
@@ -58,8 +67,8 @@ public class ResouceController {
                     }
                 }
             }
-	    }
-	    return null;
-	}
+        }
+        return null;
+    }
 }
 

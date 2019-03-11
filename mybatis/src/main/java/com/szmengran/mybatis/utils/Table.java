@@ -17,10 +17,10 @@ import java.lang.annotation.Target;
 @Target({ ElementType.TYPE })
 public @interface Table {
 
-	/**
-	 * setting primary key
-	 * The combined primary keys are separated by commas
-	 * @return
-	 */
-	String id() default "";
+    /**
+     * setting primary key
+     * The combined primary keys are separated by commas
+     * @return
+     */
+    String id() default "";
 }

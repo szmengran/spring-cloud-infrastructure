@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 @FrameworkEndpoint
 public class RevokeTokenEndpoint {
-	@Autowired
+    @Autowired
     @Qualifier("consumerTokenServices")
     ConsumerTokenServices consumerTokenServices;
 

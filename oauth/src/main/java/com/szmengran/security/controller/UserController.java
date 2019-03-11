@@ -7,14 +7,14 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 public class UserController {
-	/**
-	 * 系统中设置了只有api开头的请求才能被处理
-	 * @param user
-	 * @return      
-	 * @return: Principal      
-	 * @throws   
-	 * @author <a href="mailto:android_li@sina.cn">Joe</a>
-	 */
+    /**
+     * 系统中设置了只有api开头的请求才能被处理
+     * @param user
+     * @return      
+     * @return: Principal      
+     * @throws   
+     * @author <a href="mailto:android_li@sina.cn">Joe</a>
+     */
     @GetMapping("/user")
     public Principal user(Principal user){
         return user;
@@ -34,6 +34,6 @@ public class UserController {
     
     @GetMapping("/api/users")
     public Principal users(Principal user){
-    		return user;
+            return user;
     }
 }

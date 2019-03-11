@@ -16,15 +16,15 @@ import java.lang.annotation.Target;
 @Retention(RetentionPolicy.RUNTIME)
 @Target({ ElementType.FIELD })
 public @interface GeneratedValue {
-	
-	/**
+    
+    /**
      * (Optional) The primary key generation strategy
      * that the persistence provider must use to
      * generate the annotated entity primary key.
      */
     GenerationType strategy() default GenerationType.AUTO;
-	
-	/**
+    
+    /**
      * (Optional) The name of the primary key generator
      * to use as specified in the {@link SequenceGenerator} 
      * or {@link TableGenerator} annotation.
