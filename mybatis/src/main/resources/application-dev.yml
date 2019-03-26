@@ -1,3 +1,0 @@
-logging:
-  level:
-    com.szmengran.mybatis: DEBUG

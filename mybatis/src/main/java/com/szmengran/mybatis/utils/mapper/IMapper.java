@@ -50,6 +50,13 @@ public interface IMapper<T> {
     @DeleteProvider(type = SqlProviderUtils.class, method = "deleteByConditions")
     int deleteByConditions(@Param("class") Class<?> cla, @Param("params") Map<String, Object> params) throws Exception;
     
+    /**
+     * delete one row by object id
+     * @param object
+     * @return
+     * @throws Exception 
+     * @author <a href="mailto:android_li@sina.cn">Joe</a>
+     */
     @DeleteProvider(type = SqlProviderUtils.class, method = "delete")
     int delete(Object object) throws Exception;
     

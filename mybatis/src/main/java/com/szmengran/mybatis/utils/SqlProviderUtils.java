@@ -15,7 +15,7 @@ import com.szmengran.mybatis.utils.reflect.ReflectHandler;
 
 /**
  * @Package com.szmengran.power.util
- * @Description: TODO
+ * @Description: 数据库公共操作类
  * @date Oct 30, 2018 9:01:37 AM
  * @author <a href="mailto:android_li@sina.cn">Joe</a>
  */
