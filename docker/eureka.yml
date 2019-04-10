@@ -1,7 +1,7 @@
 version: '3.1'
 services:
   eureka:
-    image: szmengran/eureka:$INFRASTRUCTURE_VERSION
+    image: registry.cn-beijing.aliyuncs.com/szmengran/eureka:$INFRASTRUCTURE_VERSION
     restart: always
     environment:
       - KAFKA_SERVER=$KAFKA_SERVER

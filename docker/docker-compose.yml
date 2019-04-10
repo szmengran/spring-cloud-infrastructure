@@ -1,7 +1,7 @@
 version: '3.1'
 services:
   config:
-    image: szmengran/config:$INFRASTRUCTURE_VERSION
+    image: registry.cn-beijing.aliyuncs.com/szmengran/config:$INFRASTRUCTURE_VERSION
     restart: always
     environment:
       - KAFKA_SERVER=$KAFKA_SERVER
@@ -14,7 +14,7 @@ services:
     depends_on:
       - "eureka"
   eureka:
-    image: szmengran/eureka:$INFRASTRUCTURE_VERSION
+    image: registry.cn-beijing.aliyuncs.com/szmengran/eureka:$INFRASTRUCTURE_VERSION
     restart: always
     environment:
       - KAFKA_SERVER=$KAFKA_SERVER
@@ -22,7 +22,7 @@ services:
     ports:
       - "8761:8761"
   gateway:
-    image: szmengran/gateway:$INFRASTRUCTURE_VERSION
+    image: registry.cn-beijing.aliyuncs.com/szmengran/gateway:$INFRASTRUCTURE_VERSION
     restart: always
     environment:
       - KAFKA_SERVER=$KAFKA_SERVER
@@ -34,7 +34,7 @@ services:
     depends_on:
       - "config"
   oauth:
-    image: szmengran/oauth:$INFRASTRUCTURE_VERSION
+    image: registry.cn-beijing.aliyuncs.com/szmengran/oauth:$INFRASTRUCTURE_VERSION
     restart: always
     environment:
       - KAFKA_SERVER=$KAFKA_SERVER

@@ -10,7 +10,7 @@ function progress() {
 set -e
 
 # Docker image prefix
-REGPREFIX=szmengran
+REGPREFIX=registry.cn-beijing.aliyuncs.com/szmengran
 VERSION=$INFRASTRUCTURE_VERSION
 
 cd ../eureka

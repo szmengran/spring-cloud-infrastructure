@@ -1,7 +1,7 @@
 version: '3.1'
 services:
   oauth:
-    image: szmengran/oauth:$INFRASTRUCTURE_VERSION
+    image: registry.cn-beijing.aliyuncs.com/szmengran/oauth:$INFRASTRUCTURE_VERSION
     restart: always
     environment:
       - KAFKA_SERVER=$KAFKA_SERVER
