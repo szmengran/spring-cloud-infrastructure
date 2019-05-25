@@ -20,7 +20,7 @@
         <bintray.package>cloud</bintray.package>
         <netty.version>4.1.32.Final</netty.version>
         <spring-boot.version>2.1.3.RELEASE</spring-boot.version>
-        <spring-security-oauth2.version>2.2.1.RELEASE</spring-security-oauth2.version>
+        <spring-security-oauth2.version>2.3.5.RELEASE</spring-security-oauth2.version>
         <donotreplacespring-cloud-contract.version>1.2.0.RELEASE</donotreplacespring-cloud-contract.version>
 
         <!-- Sonar -->
@@ -46,8 +46,6 @@
 
         <!-- aliyun -->
         <druid-spring-boot-starter.version>1.1.10</druid-spring-boot-starter.version>
-        <aliyun-java-sdk-dysmsapi.version>1.1.0</aliyun-java-sdk-dysmsapi.version>
-        <aliyun-java-sdk-core.version>4.3.4</aliyun-java-sdk-core.version>
         <druid.version>1.1.13</druid.version>
 
         <!-- Plugin versions -->
@@ -114,17 +112,6 @@
                 <groupId>com.alibaba</groupId>
                 <artifactId>druid-spring-boot-starter</artifactId>
                 <version>${druid-spring-boot-starter.version}</version>
-            </dependency>
-            <!-- aliyun sms api -->
-            <dependency>
-                <groupId>com.aliyun</groupId>
-                <artifactId>aliyun-java-sdk-dysmsapi</artifactId>
-                <version>${aliyun-java-sdk-dysmsapi.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>com.aliyun</groupId>
-                <artifactId>aliyun-java-sdk-core</artifactId>
-                <version>${aliyun-java-sdk-core.version}</version>
             </dependency>
             <dependency>
                 <groupId>com.alibaba</groupId>

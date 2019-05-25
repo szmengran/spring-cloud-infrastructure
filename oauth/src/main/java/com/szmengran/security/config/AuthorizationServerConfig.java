@@ -46,26 +46,27 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
 
     @Override
     public void configure(AuthorizationServerEndpointsConfigurer endpoints) throws Exception {
-            try {
-                endpoints
+        try {
+            endpoints
                 .authenticationManager(authenticationManager)
                 .userDetailsService(userDetailsService())//若无，refresh_token会有UserDetailsService is required错误
                 .tokenStore(tokenStore());
-            }catch(Exception e) {
-                e.printStackTrace();
-            }
+        } catch(Exception e) {
+            e.printStackTrace();
+        }
     }
 
     @Override
     public void configure(AuthorizationServerSecurityConfigurer security) throws Exception {
         security
-                .tokenKeyAccess("permitAll()")
-                .checkTokenAccess("isAuthenticated()");
+            .tokenKeyAccess("permitAll()")
+            .checkTokenAccess("isAuthenticated()").passwordEncoder(passwordEncoder());
     }
    
     @Override
     public void configure(ClientDetailsServiceConfigurer clients) throws Exception {
-        clients.jdbc(this.writeDataSource)
-        .passwordEncoder(passwordEncoder());
+        clients
+            .jdbc(this.writeDataSource)
+            .passwordEncoder(passwordEncoder());
     }
 }
