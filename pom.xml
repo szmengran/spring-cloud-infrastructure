@@ -4,7 +4,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>com.szmengran</groupId>
 	<artifactId>spring-cloud-infrastructure</artifactId>
-	<version>${cloud.version}</version>
+	<version>${infrestructure.version}</version>
 	<packaging>pom</packaging>
 	<!-- version set command: mvn versions:set -DgenerateBackupPoms=false -->
 	<parent>
@@ -14,7 +14,7 @@
 		<relativePath /> <!-- lookup parent from repository -->
 	</parent>
 	<properties>
-		<cloud.version>0.0.4</cloud.version>
+		<infrestructure.version>0.0.4</infrestructure.version>
 		<orm.version>0.0.3</orm.version>
 		<bintray.package>cloud</bintray.package>
 		<netty.version>4.1.39.Final</netty.version>
@@ -53,6 +53,11 @@
 				<version>${spring-cloud.version}</version>
 				<type>pom</type>
 				<scope>import</scope>
+			</dependency>
+			<dependency>
+				<groupId>org.springframework.security.oauth.boot</groupId>
+				<artifactId>spring-security-oauth2-autoconfigure</artifactId>
+				<version>2.1.7.RELEASE</version>
 			</dependency>
 			<dependency>
 				<groupId>com.fasterxml.jackson.core</groupId>
@@ -187,6 +192,11 @@
 				<artifactId>mysql-connector-java</artifactId>
 				<version>8.0.17</version>
 			</dependency>
+            <dependency>
+                <groupId>junit</groupId>
+                <artifactId>junit</artifactId>
+                <version>4.12</version>
+            </dependency>
 		</dependencies>
 	</dependencyManagement>
 	<dependencies>

@@ -29,10 +29,14 @@ public class SqlProviderUtils {
      * @author <a href="mailto:android_li@sina.cn">Joe</a>
      */
     public String insert(Object object) throws Exception {
-        Class<?> beanClass = object.getClass();
-        String tableName = beanClass.getSimpleName();
         return new SQL() {
             {
+                Class<?> beanClass = object.getClass();
+                Table table = beanClass.getAnnotation(Table.class);
+                String tableName = table.name();
+                if (StringUtils.isEmpty(tableName)) {
+                    tableName = beanClass.getSimpleName();
+                }
                 INSERT_INTO(tableName);
                 Set<Field> fields = ReflectHandler.getAllFields(beanClass);
                 for (Field field: fields) {
@@ -69,8 +73,11 @@ public class SqlProviderUtils {
         List<Object> list = map.get("list");
         Object object = list.get(0);
         Class<?> beanClass = object.getClass();
-        String tableName = beanClass.getSimpleName();
-        
+        Table table = beanClass.getAnnotation(Table.class);
+        String tableName = table.name();
+        if (StringUtils.isEmpty(tableName)) {
+            tableName = beanClass.getSimpleName();
+        }
         StringBuilder strSql = new StringBuilder();
         strSql.append("INSERT INTO ").append(tableName).append("(");
         StringBuilder fieldSql = new StringBuilder();
@@ -122,14 +129,19 @@ public class SqlProviderUtils {
     public String deleteByConditions(Map<String, Object> map) throws Exception{
         @SuppressWarnings("unchecked")
         Map<String, Object> params = (Map<String, Object>)map.get("params");
-        @SuppressWarnings("rawtypes")
-        String tableName = ((Class)map.get("class")).getSimpleName();
+        
         if (params == null || params.size() == 0) {
             throw new Exception("do not allow full table delete!");
         }
         Set<String> fields = params.keySet();
         String strSql = new SQL(){
             {
+                Class<?> beanClass = (Class<?>)map.get("class");
+                Table table = beanClass.getAnnotation(Table.class);
+                String tableName = table.name();
+                if (StringUtils.isEmpty(tableName)) {
+                    tableName = beanClass.getSimpleName();
+                }
                 DELETE_FROM(tableName);
                 for (String field: fields) {
                     WHERE(field+" = #{params."+field+"}");
@@ -149,7 +161,6 @@ public class SqlProviderUtils {
      */
     public String delete(Object bean) throws Exception{
         Class<?> beanClass = bean.getClass();
-        String tableName = beanClass.getSimpleName();
         Table table = beanClass.getAnnotation(Table.class);
         String strKeys = table.id();
         if (StringUtils.isEmpty(strKeys)) {
@@ -157,6 +168,10 @@ public class SqlProviderUtils {
         }
         return new SQL() {
             {
+                String tableName = table.name();
+                if (StringUtils.isEmpty(tableName)) {
+                    tableName = beanClass.getSimpleName();
+                }
                 DELETE_FROM(tableName);
                 String keys[] = strKeys.split(",");
                 for (String key: keys) {
@@ -174,13 +189,17 @@ public class SqlProviderUtils {
      * @author <a href="mailto:android_li@sina.cn">Joe</a>
      */
     public String findByConditions(Map<String, Object> map) throws Exception {
-        @SuppressWarnings("rawtypes")
-        String tableName = ((Class)map.get("class")).getSimpleName();
         @SuppressWarnings("unchecked")
         Map<String, Object> params = (Map<String, Object>)map.get("params");
         String orderBy = (String)map.get("orderBy");
         return new SQL() {
             {
+                Class<?> beanClass = (Class<?>)map.get("class");
+                Table table = beanClass.getAnnotation(Table.class);
+                String tableName = table.name();
+                if (StringUtils.isEmpty(tableName)) {
+                    tableName = beanClass.getSimpleName();
+                }
                 SELECT("*");
                 FROM(tableName);
                 if (params != null && params.size() > 0) {
@@ -228,7 +247,6 @@ public class SqlProviderUtils {
      */
     public String findById(Object object) throws Exception {
         Class<?> beanClass = object.getClass();
-        String tableName = beanClass.getSimpleName();
         Table table = beanClass.getAnnotation(Table.class);
         String strKeys = table.id();
         if (StringUtils.isEmpty(strKeys)) {
@@ -237,6 +255,10 @@ public class SqlProviderUtils {
         
         return new SQL() {
             {
+                String tableName = table.name();
+                if (StringUtils.isEmpty(tableName)) {
+                    tableName = beanClass.getSimpleName();
+                }
                 SELECT("*");
                 FROM(tableName);
                 String keys[] = strKeys.split(",");
@@ -256,7 +278,6 @@ public class SqlProviderUtils {
      */
     public String update(Object object) throws Exception{
         Class<?> beanClass = object.getClass();
-        String tableName = beanClass.getSimpleName();
         Table table = beanClass.getAnnotation(Table.class);
         String strKeys = table.id();
         if (StringUtils.isEmpty(strKeys)) {
@@ -264,6 +285,10 @@ public class SqlProviderUtils {
         }
         return new SQL() {
             {
+                String tableName = table.name();
+                if (StringUtils.isEmpty(tableName)) {
+                    tableName = beanClass.getSimpleName();
+                }
                 UPDATE(tableName);
                 Set<Field> fields = ReflectHandler.getAllFields(beanClass);
                 String keys[] = strKeys.split(",");

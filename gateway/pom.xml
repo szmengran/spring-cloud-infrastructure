@@ -5,7 +5,7 @@
     <parent>
         <groupId>com.szmengran</groupId>
         <artifactId>spring-cloud-infrastructure</artifactId>
-        <version>${cloud.version}</version>
+        <version>${infrestructure.version}</version>
     </parent>
     <artifactId>gateway</artifactId>
     <dependencies>

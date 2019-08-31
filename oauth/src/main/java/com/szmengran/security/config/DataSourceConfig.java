@@ -30,14 +30,14 @@ public class DataSourceConfig {
         return filterRegistrationBean;
     }
     
-    @Bean(initMethod = "init", name = "readDataSource")  
-    @ConfigurationProperties(prefix = "spring.datasource.druid.read")  
+    @Bean(initMethod = "init", name = "slave")  
+    @ConfigurationProperties(prefix = "spring.datasource.druid.slave")  
     public DataSource readDataSource(){  
         return DruidDataSourceBuilder.create().build();  
     }  
   
-    @Bean(initMethod = "init", name = "writeDataSource")  
-    @ConfigurationProperties(prefix = "spring.datasource.druid.write")  
+    @Bean(initMethod = "init", name = "master")  
+    @ConfigurationProperties(prefix = "spring.datasource.druid.master")  
     @Primary
     public DataSource writeDataSource(){  
         return DruidDataSourceBuilder.create().build();  

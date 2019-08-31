@@ -12,7 +12,7 @@ import java.util.concurrent.ConcurrentHashMap;
  */
 public class DataCache {
     
-    private static final Map<String,Object> map = new ConcurrentHashMap<String,Object>();
+    private static final Map<String, Object> map = new ConcurrentHashMap<String, Object>();
     private static final DataCache dataCache = new DataCache();
     
     private DataCache() {}

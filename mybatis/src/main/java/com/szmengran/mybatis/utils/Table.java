@@ -23,4 +23,5 @@ public @interface Table {
      * @return
      */
     String id() default "";
+    String name() default "";
 }
