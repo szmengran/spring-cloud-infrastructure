@@ -6,7 +6,7 @@
 	<parent>
 		<groupId>com.szmengran</groupId>
 		<artifactId>spring-cloud-infrastructure</artifactId>
-		<version>${infrestructure.version}</version>
+		<version>0.0.4</version>
 	</parent>
 
 	<dependencies>
@@ -57,7 +57,6 @@
 		<dependency>
 			<groupId>com.szmengran</groupId>
 			<artifactId>mybatis</artifactId>
-			<version>${infrestructure.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>junit</groupId>
