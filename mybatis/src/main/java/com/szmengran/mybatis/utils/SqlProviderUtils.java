@@ -33,9 +33,11 @@ public class SqlProviderUtils {
             {
                 Class<?> beanClass = object.getClass();
                 Table table = beanClass.getAnnotation(Table.class);
-                String tableName = table.name();
-                if (StringUtils.isEmpty(tableName)) {
+                String tableName = "";
+                if (table == null || StringUtils.isEmpty(table.name())) {
                     tableName = beanClass.getSimpleName();
+                } else {
+                    tableName = table.name();
                 }
                 INSERT_INTO(tableName);
                 Set<Field> fields = ReflectHandler.getAllFields(beanClass);
@@ -74,9 +76,11 @@ public class SqlProviderUtils {
         Object object = list.get(0);
         Class<?> beanClass = object.getClass();
         Table table = beanClass.getAnnotation(Table.class);
-        String tableName = table.name();
-        if (StringUtils.isEmpty(tableName)) {
+        String tableName = "";
+        if (table == null || StringUtils.isEmpty(table.name())) {
             tableName = beanClass.getSimpleName();
+        } else {
+            tableName = table.name();
         }
         StringBuilder strSql = new StringBuilder();
         strSql.append("INSERT INTO ").append(tableName).append("(");
@@ -138,9 +142,11 @@ public class SqlProviderUtils {
             {
                 Class<?> beanClass = (Class<?>)map.get("class");
                 Table table = beanClass.getAnnotation(Table.class);
-                String tableName = table.name();
-                if (StringUtils.isEmpty(tableName)) {
+                String tableName = "";
+                if (table == null || StringUtils.isEmpty(table.name())) {
                     tableName = beanClass.getSimpleName();
+                } else {
+                    tableName = table.name();
                 }
                 DELETE_FROM(tableName);
                 for (String field: fields) {
@@ -168,9 +174,11 @@ public class SqlProviderUtils {
         }
         return new SQL() {
             {
-                String tableName = table.name();
-                if (StringUtils.isEmpty(tableName)) {
+                String tableName = "";
+                if (table == null || StringUtils.isEmpty(table.name())) {
                     tableName = beanClass.getSimpleName();
+                } else {
+                    tableName = table.name();
                 }
                 DELETE_FROM(tableName);
                 String keys[] = strKeys.split(",");
@@ -196,9 +204,11 @@ public class SqlProviderUtils {
             {
                 Class<?> beanClass = (Class<?>)map.get("class");
                 Table table = beanClass.getAnnotation(Table.class);
-                String tableName = table.name();
-                if (StringUtils.isEmpty(tableName)) {
+                String tableName = "";
+                if (table == null || StringUtils.isEmpty(table.name())) {
                     tableName = beanClass.getSimpleName();
+                } else {
+                    tableName = table.name();
                 }
                 SELECT("*");
                 FROM(tableName);
@@ -255,9 +265,11 @@ public class SqlProviderUtils {
         
         return new SQL() {
             {
-                String tableName = table.name();
-                if (StringUtils.isEmpty(tableName)) {
+                String tableName = "";
+                if (table == null || StringUtils.isEmpty(table.name())) {
                     tableName = beanClass.getSimpleName();
+                } else {
+                    tableName = table.name();
                 }
                 SELECT("*");
                 FROM(tableName);
@@ -285,9 +297,11 @@ public class SqlProviderUtils {
         }
         return new SQL() {
             {
-                String tableName = table.name();
-                if (StringUtils.isEmpty(tableName)) {
+                String tableName = "";
+                if (table == null || StringUtils.isEmpty(table.name())) {
                     tableName = beanClass.getSimpleName();
+                } else {
+                    tableName = table.name();
                 }
                 UPDATE(tableName);
                 Set<Field> fields = ReflectHandler.getAllFields(beanClass);
