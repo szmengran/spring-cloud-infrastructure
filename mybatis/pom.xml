@@ -8,6 +8,7 @@
         <version>0.0.4</version>
     </parent>
     <artifactId>mybatis</artifactId>
+    <version>0.0.5</version>
     <dependencies>
         <dependency>
             <groupId>org.mybatis.spring.boot</groupId>

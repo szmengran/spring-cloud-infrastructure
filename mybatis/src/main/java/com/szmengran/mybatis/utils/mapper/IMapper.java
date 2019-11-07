@@ -1,5 +1,6 @@
 package com.szmengran.mybatis.utils.mapper;
 
+import java.sql.SQLException;
 import java.util.List;
 import java.util.Map;
 
@@ -27,7 +28,7 @@ public interface IMapper<T> {
      * @author <a href="mailto:android_li@sina.cn">Joe</a>
      */
     @InsertProvider(type = SqlProviderUtils.class, method = "insert")
-    int insert(Object object) throws Exception;
+    int insert(Object object) throws SQLException;
     
     /**
      * batch insert data
@@ -37,7 +38,7 @@ public interface IMapper<T> {
      * @author <a href="mailto:android_li@sina.cn">Joe</a>
      */
     @InsertProvider(type = SqlProviderUtils.class, method = "insertBatch")
-    int insertBatch(List<T> list) throws Exception;
+    int insertBatch(List<T> list) throws SQLException;
     
     /**
      * delete data by conditions
@@ -48,7 +49,7 @@ public interface IMapper<T> {
      * @author <a href="mailto:android_li@sina.cn">Joe</a>
      */
     @DeleteProvider(type = SqlProviderUtils.class, method = "deleteByConditions")
-    int deleteByConditions(@Param("class") Class<?> cla, @Param("params") Map<String, Object> params) throws Exception;
+    int deleteByConditions(@Param("class") Class<?> cla, @Param("params") Map<String, Object> params);
     
     /**
      * delete one row by object id
@@ -58,7 +59,7 @@ public interface IMapper<T> {
      * @author <a href="mailto:android_li@sina.cn">Joe</a>
      */
     @DeleteProvider(type = SqlProviderUtils.class, method = "delete")
-    int delete(Object object) throws Exception;
+    int delete(Object object);
     
     /**
      * find data by primary key
@@ -68,7 +69,7 @@ public interface IMapper<T> {
      * @author <a href="mailto:android_li@sina.cn">Joe</a>
      */
     @SelectProvider(type = SqlProviderUtils.class, method = "findById")
-    T findById(T object) throws Exception;
+    T findById(T object);
     
     /**
      * find data by conditions
@@ -80,7 +81,7 @@ public interface IMapper<T> {
      * @author <a href="mailto:android_li@sina.cn">Joe</a>
      */
     @SelectProvider(type = SqlProviderUtils.class, method = "findByConditions")
-    List<T> findByConditions(@Param("class") Class<T> cla, @Param("params") Map<String, Object> params, @Param("orderBy") String orderBy) throws Exception;
+    List<T> findByConditions(@Param("class") Class<T> cla, @Param("params") Map<String, Object> params, @Param("orderBy") String orderBy);
 
     /**
      * find data by sql and conditions
@@ -92,7 +93,7 @@ public interface IMapper<T> {
      * @author <a href="mailto:android_li@sina.cn">Joe</a>
      */
     @SelectProvider(type = SqlProviderUtils.class, method = "findBySql")
-    List<T> findBySql(@Param("class") Class<T> cla, @Param("strSql") String strSql, @Param("params") Map<String, Object> params) throws Exception;
+    List<T> findBySql(@Param("class") Class<T> cla, @Param("strSql") String strSql, @Param("params") Map<String, Object> params);
     
     /**
      * update data by primary key
@@ -102,7 +103,7 @@ public interface IMapper<T> {
      * @author <a href="mailto:android_li@sina.cn">Joe</a>
      */
     @UpdateProvider(type = SqlProviderUtils.class, method = "update")
-    int update(Object object) throws Exception;
+    int update(Object object);
     
     /**
      * execute sql
@@ -113,5 +114,5 @@ public interface IMapper<T> {
      * @author <a href="mailto:android_li@sina.cn">Joe</a>
      */
     @UpdateProvider(type = SqlProviderUtils.class, method = "execute")
-    int execute(@Param("strSql") String strSql, @Param("params") Map<String, Object> params) throws Exception;
+    int execute(@Param("strSql") String strSql, @Param("params") Map<String, Object> params) throws SQLException;
 }

@@ -7,9 +7,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import org.springframework.util.StringUtils;
 import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.jdbc.SQL;
+import org.springframework.util.StringUtils;
 
 import com.szmengran.mybatis.utils.reflect.ReflectHandler;
 
@@ -28,7 +28,7 @@ public class SqlProviderUtils {
      * @throws Exception 
      * @author <a href="mailto:android_li@sina.cn">Joe</a>
      */
-    public String insert(Object object) throws Exception {
+    public String insert(Object object) {
         return new SQL() {
             {
                 Class<?> beanClass = object.getClass();
@@ -71,7 +71,7 @@ public class SqlProviderUtils {
      * @throws Exception 
      * @author <a href="mailto:android_li@sina.cn">Joe</a>
      */
-    public String insertBatch(Map<String, List<Object>> map) throws Exception {
+    public String insertBatch(Map<String, List<Object>> map) {
         List<Object> list = map.get("list");
         Object object = list.get(0);
         Class<?> beanClass = object.getClass();
@@ -130,15 +130,15 @@ public class SqlProviderUtils {
      * @throws Exception 
      * @author <a href="mailto:android_li@sina.cn">Joe</a>
      */
-    public String deleteByConditions(Map<String, Object> map) throws Exception{
+    public String deleteByConditions(Map<String, Object> map) {
         @SuppressWarnings("unchecked")
         Map<String, Object> params = (Map<String, Object>)map.get("params");
         
         if (params == null || params.size() == 0) {
-            throw new Exception("do not allow full table delete!");
+            throw new NullPointerException("do not allow full table delete!");
         }
         Set<String> fields = params.keySet();
-        String strSql = new SQL(){
+        String strSql = new SQL() {
             {
                 Class<?> beanClass = (Class<?>)map.get("class");
                 Table table = beanClass.getAnnotation(Table.class);
@@ -165,12 +165,12 @@ public class SqlProviderUtils {
      * @throws Exception 
      * @author <a href="mailto:android_li@sina.cn">Joe</a>
      */
-    public String delete(Object bean) throws Exception{
+    public String delete(Object bean) {
         Class<?> beanClass = bean.getClass();
         Table table = beanClass.getAnnotation(Table.class);
         String strKeys = table.id();
         if (StringUtils.isEmpty(strKeys)) {
-            throw new Exception("The object "+beanClass.getName()+" has not yet she the primary key, can not use this method to delete data!");
+            throw new NullPointerException("The object "+beanClass.getName()+" has not yet she the primary key, can not use this method to delete data!");
         }
         return new SQL() {
             {
@@ -196,7 +196,7 @@ public class SqlProviderUtils {
      * @throws Exception 
      * @author <a href="mailto:android_li@sina.cn">Joe</a>
      */
-    public String findByConditions(Map<String, Object> map) throws Exception {
+    public String findByConditions(Map<String, Object> map) {
         @SuppressWarnings("unchecked")
         Map<String, Object> params = (Map<String, Object>)map.get("params");
         String orderBy = (String)map.get("orderBy");
@@ -232,7 +232,7 @@ public class SqlProviderUtils {
      * @throws Exception 
      * @author <a href="mailto:android_li@sina.cn">Joe</a>
      */
-    public String findBySql(Map<String, Object> map) throws Exception {
+    public String findBySql(Map<String, Object> map) {
         String strSql = (String)map.get("strSql");
         
         @SuppressWarnings("unchecked")
@@ -255,12 +255,12 @@ public class SqlProviderUtils {
      * @throws Exception 
      * @author <a href="mailto:android_li@sina.cn">Joe</a>
      */
-    public String findById(Object object) throws Exception {
+    public String findById(Object object) {
         Class<?> beanClass = object.getClass();
         Table table = beanClass.getAnnotation(Table.class);
         String strKeys = table.id();
         if (StringUtils.isEmpty(strKeys)) {
-            throw new Exception("The object "+beanClass.getName()+" has not yet she the primary key, can not use this method to find data!");
+            throw new NullPointerException("The object "+beanClass.getName()+" has not yet she the primary key, can not use this method to find data!");
         }
         
         return new SQL() {
@@ -288,12 +288,12 @@ public class SqlProviderUtils {
      * @throws Exception 
      * @author <a href="mailto:android_li@sina.cn">Joe</a>
      */
-    public String update(Object object) throws Exception{
+    public String update(Object object) {
         Class<?> beanClass = object.getClass();
         Table table = beanClass.getAnnotation(Table.class);
         String strKeys = table.id();
         if (StringUtils.isEmpty(strKeys)) {
-            throw new Exception("The object "+beanClass.getName()+" has not yet she the primary key, can not use this method to up data!");
+            throw new NullPointerException("The object "+beanClass.getName()+" has not yet she the primary key, can not use this method to up data!");
         }
         return new SQL() {
             {
@@ -330,7 +330,7 @@ public class SqlProviderUtils {
      * @throws Exception 
      * @author <a href="mailto:android_li@sina.cn">Joe</a>
      */
-    public String execute(@Param("strSql") String strSql) throws Exception {
+    public String execute(@Param("strSql") String strSql) {
         return strSql;
     }
 }
