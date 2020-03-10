@@ -5,10 +5,9 @@
     <parent>
         <groupId>com.szmengran</groupId>
         <artifactId>spring-cloud-infrastructure</artifactId>
-        <version>0.0.4</version>
+        <version>1.0.0</version>
     </parent>
     <artifactId>mybatis</artifactId>
-    <version>0.0.5</version>
     <dependencies>
         <dependency>
             <groupId>org.mybatis.spring.boot</groupId>

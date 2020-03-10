@@ -1,16 +1,8 @@
-logging:
-  level:
-    com.netflix: warn
 server:
   port: 8761
 spring:
   application:
     name: eureka
-  sleuth:
-    traceId128:
-      true
-  kafka:
-    bootstrap-servers: ${KAFKA_SERVER}
 eureka:
   instance:
     prefer-ip-address: true
@@ -23,4 +15,6 @@ eureka:
     eviction-interval-timer-in-ms: 5000       # 续期时间，即扫描失效服务的间隔时间（缺省为60*1000ms）
     serviceUrl:
       defaultZone: http://${eureka.instance.hostname}:${server.port}/eureka/
-  environment: ${ENVIRONMENT}
+logging:
+  level:
+    com.netflix: warn

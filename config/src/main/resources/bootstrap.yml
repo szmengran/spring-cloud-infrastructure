@@ -1,29 +1,7 @@
-eureka:
-  instance:
-    prefer-ip-address: true
-    leaseRenewalIntervalInSeconds: 10
-  client:
-    registerWithEureka: true
-    fetchRegistry: true
-    serviceUrl:
-      defaultZone: ${EUREKA_SERVER_ADDRESS}
 server:
   port: 10001
-management:
-  endpoints:
-    web:
-      exposure:
-        include: bus-refresh
 spring:
   application:
     name: config
   profiles:
     active: ${ENVIRONMENT}
-  bus:
-    trace:
-      enabled: true
-  sleuth:
-    traceId128:
-      true
-  kafka:
-    bootstrap-servers: ${KAFKA_SERVER}

@@ -1,18 +1,6 @@
-logging:
-  level:
-    com.netflix.discovery: 'OFF'
-    org.springframework.cloud: 'DEBUG'
-    org.springframework.security: DEBUG
 spring:
-  application:
-    name: config
   cloud:
     config:
       server:
         native:
           search-locations: classpath:/native-repo #通过.gitingore配置本地配置库不提交
-  profiles:
-     active: dev
-ribbon:
-  ReadTimeout: 120000 #请求处理的超时时间 
-  ConnectTimeout: 30000 #请求连接的超时时间
