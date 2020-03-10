@@ -6,41 +6,30 @@ import org.springframework.security.oauth2.config.annotation.web.configuration.E
 import org.springframework.security.oauth2.config.annotation.web.configuration.ResourceServerConfigurerAdapter;
 import org.springframework.security.oauth2.config.annotation.web.configurers.ResourceServerSecurityConfigurer;
 
+/**
+ * 
+ * @description 资源服务器配置
+ * @package com.szmengran.security.config 
+ * @date Mar 6, 2020 1:18:48 PM 
+ * @author <a href="mailto:android_li@sina.cn">Joe</a>
+ */
 @Configuration
 @EnableResourceServer
 public class ResourceServerConfig extends ResourceServerConfigurerAdapter {
 
     @Override
     public void configure(HttpSecurity http) throws Exception {
-//        http
-//                .csrf().disable()
-//                .exceptionHandling()
-//                .authenticationEntryPoint((request, response, authException) -> response.sendError(HttpServletResponse.SC_UNAUTHORIZED))
-//            .and()
-//                .authorizeRequests()
-//                .anyRequest().authenticated()
-//                .antMatchers("/css/**","/img/**","/login/**","/oauth/**").permitAll()
-//                .anyRequest().authenticated()
-//            .and()
-//               .formLogin().loginPage("/login")
-//               .defaultSuccessUrl("/delegate/success", true)
-//               .failureUrl("/login/fail")
-//                   .permitAll()
-//            .and()
-//              .logout()
-//               .logoutUrl("/logout")
-//               .logoutSuccessUrl("/login")                                  
-//               .permitAll()
-//            .and()
-//                .httpBasic();
-        http.requestMatchers().antMatchers("/api/**")
+    	http.authorizeRequests()
+        .anyRequest()
+        .authenticated()
         .and()
-        .authorizeRequests().anyRequest().access("#oauth2.hasScope('write')")
-        .antMatchers("/api/**").authenticated();
+        .requestMatchers()
+        // 配置需要保护的资源路径
+        .antMatchers("/api/**");
     }
     
     @Override
     public void configure(ResourceServerSecurityConfigurer resources) throws Exception {
-         resources.resourceId("cloud");
+         resources.resourceId("api");
     }
 }

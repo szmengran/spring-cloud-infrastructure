@@ -9,7 +9,8 @@ public class TestBCryptPasswordEncoder {
     @Test
     public void cryptTest() {
         BCryptPasswordEncoder bCryptPasswordEncoder = new BCryptPasswordEncoder();
-        String encode = bCryptPasswordEncoder.encode("abc");
-        Assert.assertTrue(bCryptPasswordEncoder.matches("abc", encode));
+        String encode = bCryptPasswordEncoder.encode("api");
+        System.out.println(encode);
+        Assert.assertTrue(bCryptPasswordEncoder.matches("12345", encode));
     }
 }

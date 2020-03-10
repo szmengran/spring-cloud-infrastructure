@@ -18,30 +18,38 @@ import org.springframework.security.oauth2.config.annotation.web.configurers.Aut
 import org.springframework.security.oauth2.provider.token.store.redis.RedisTokenStore;
 
 import com.alibaba.druid.pool.DruidDataSource;
-import com.szmengran.security.service.UserService;
 
+/**
+ * 
+ * @description 授权服务器配置
+ * @package com.szmengran.security.config 
+ * @date Mar 6, 2020 1:08:47 PM 
+ * @author <a href="mailto:android_li@sina.cn">Joe</a>
+ */
 @Configuration
 @EnableAuthorizationServer
 public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdapter {
+	
     @Autowired
     private AuthenticationManager authenticationManager;
+    
     @Autowired
     private RedisConnectionFactory connectionFactory;
+    
     @Resource
-    private DruidDataSource writeDataSource;
+    private DruidDataSource dataSource;
+    
+    @Autowired
+    private UserDetailsService userDetailsService;
+    
+    @Bean
+	public BCryptPasswordEncoder passwordEncoder() {
+		return new BCryptPasswordEncoder();
+    }
+    
     @Bean
     public RedisTokenStore tokenStore() {
         return new RedisTokenStore(connectionFactory);
-    }
-
-    @Bean
-    public BCryptPasswordEncoder passwordEncoder() {
-        return new BCryptPasswordEncoder();
-    }
-
-    @Bean
-    public UserDetailsService userDetailsService() {
-        return new UserService();
     }
 
     @Override
@@ -49,13 +57,15 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
         try {
             endpoints
                 .authenticationManager(authenticationManager)
-                .userDetailsService(userDetailsService())//若无，refresh_token会有UserDetailsService is required错误
+                .userDetailsService(userDetailsService)//若无，refresh_token会有UserDetailsService is required错误
                 .tokenStore(tokenStore());
+            endpoints.authenticationManager(authenticationManager);
+            endpoints.tokenStore(tokenStore());
         } catch(Exception e) {
             e.printStackTrace();
         }
     }
-
+    
     @Override
     public void configure(AuthorizationServerSecurityConfigurer security) throws Exception {
         security
@@ -66,7 +76,7 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
     @Override
     public void configure(ClientDetailsServiceConfigurer clients) throws Exception {
         clients
-            .jdbc(this.writeDataSource)
+            .jdbc(dataSource)
             .passwordEncoder(passwordEncoder());
     }
 }

@@ -1,30 +1,14 @@
-eureka:
-  instance:
-    prefer-ip-address: true
-  client:
-    serviceUrl:
-      defaultZone: ${EUREKA_SERVER_ADDRESS}
 server:
   port: 10002
 spring:
   application:
     name: oauth
+  profiles:
+    active: ${ENVIRONMENT}
   cloud:
     config:
       uri: ${CONFIG_SERVER_ADDRESS}
       fail-fast: true
-  profiles:
-    active: ${ENVIRONMENT}
-  sleuth:
-    traceId128:
-      true
-  kafka:
-    bootstrap-servers: ${KAFKA_SERVER}
-    
-endpoints:
-  restart:
-    enabled: true
-  shutdown:
-    enabled: true
-  health:
-    sensitive: false
+logging:
+  level:
+    org.springframework.security: debug

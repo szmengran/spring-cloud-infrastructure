@@ -1,52 +1,40 @@
 package com.szmengran.security.config;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
+import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.builders.WebSecurity;
+import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
-import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
+/**
+ * 
+ * @description SpringSecurity配置，允许授权相关路径的访问及表单登录
+ * @package com.szmengran.security.config 
+ * @date Mar 6, 2020 1:36:22 PM 
+ * @author <a href="mailto:android_li@sina.cn">Joe</a>
+ */
 @Configuration
-@EnableAutoConfiguration
+@EnableWebSecurity
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
     
-    @Autowired
-    private UserDetailsService userDetailsService;
-    
-//    @Bean
-//    public UserDetailsService userDetailsService() {
-//        return new UserService();
-//    }
-
     @Override
-    protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-        auth.userDetailsService(userDetailsService).passwordEncoder(new BCryptPasswordEncoder());
+    protected void configure(HttpSecurity http) throws Exception {
+    	http
+    	.requestMatchers().anyRequest()
+    	.and()
+    	.authorizeRequests().antMatchers("/oauth/*").permitAll();
     }
     
-//    @Override
-//    protected void configure(HttpSecurity http) throws Exception {
-//        http
-//            .authorizeRequests()
-//                .antMatchers("/", "/home").permitAll()
-//                .anyRequest().authenticated()
-//                .and()
-//            .formLogin()
-//                .loginPage("http://localhost:8000/#/user/login") //指定登录页面
-//                .permitAll()
-//                .and()
-//            .logout()
-//                .permitAll();
-//    }
-//
-//    @Bean
-//    public SecurityEvaluationContextExtension securityEvaluationContextExtension() {
-//        return new SecurityEvaluationContextExtension();
-//    }
-
+    @Override
+    public void configure(WebSecurity web) throws Exception {
+        web.ignoring().antMatchers(
+                                   "/swagger-resources/**",
+                                   "/swagger-ui.html"
+                                   );
+    }
+    
     // 不定义没有password grant_type
     @Override
     @Bean

@@ -3,13 +3,11 @@ package com.szmengran.security.config;
 import javax.sql.DataSource;
 
 import org.springframework.boot.context.properties.ConfigurationProperties;
-import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Primary;
 
 import com.alibaba.druid.spring.boot.autoconfigure.DruidDataSourceBuilder;
-import com.alibaba.druid.support.http.WebStatFilter;
 
 /**
  * @Package com.szmengran.security.config
@@ -19,27 +17,11 @@ import com.alibaba.druid.support.http.WebStatFilter;
  */
 @Configuration
 public class DataSourceConfig {
-
-    @SuppressWarnings("rawtypes")
-    @Bean
-    public FilterRegistrationBean filterRegistrationBean() {
-        @SuppressWarnings("unchecked")
-        FilterRegistrationBean filterRegistrationBean = new FilterRegistrationBean(new WebStatFilter());
-        filterRegistrationBean.addUrlPatterns("/*");
-        filterRegistrationBean.addInitParameter("exclusions", "*.js,*.gif,*.jpg,*.png,*.css,*.ico,/druid/*,swagger-ui.html*");
-        return filterRegistrationBean;
-    }
-    
-    @Bean(initMethod = "init", name = "slave")  
-    @ConfigurationProperties(prefix = "spring.datasource.druid.slave")  
-    public DataSource readDataSource(){  
-        return DruidDataSourceBuilder.create().build();  
-    }  
-  
-    @Bean(initMethod = "init", name = "master")  
-    @ConfigurationProperties(prefix = "spring.datasource.druid.master")  
+	
+    @Bean(initMethod = "init", name = "dataSource")  
+    @ConfigurationProperties(prefix = "spring.datasource.druid")  
     @Primary
-    public DataSource writeDataSource(){  
+    public DataSource getDataSource(){  
         return DruidDataSourceBuilder.create().build();  
     } 
 }
