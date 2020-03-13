@@ -1,8 +1,10 @@
 server:
   port: 10002
+  servlet:
+    context-path: /api/v1/oauth2/
 spring:
   application:
-    name: oauth
+    name: oauth2
   profiles:
     active: ${ENVIRONMENT}
   cloud:

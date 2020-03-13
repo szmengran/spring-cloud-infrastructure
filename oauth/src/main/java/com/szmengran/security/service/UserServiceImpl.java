@@ -40,6 +40,7 @@ public class UserServiceImpl implements UserDetailsService {
         List<Role> roles = new ArrayList<>();
         Role role = new Role();
         role.setName("ROLE_ADMIN");
+        roles.add(role);
         return new User(user, roles);
     }
 }
