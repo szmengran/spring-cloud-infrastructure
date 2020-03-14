@@ -1,7 +1,3 @@
-server:
-  port: 10002
-  servlet:
-    context-path: /api/v1/oauth2/
 spring:
   application:
     name: oauth2
@@ -11,6 +7,3 @@ spring:
     config:
       uri: ${CONFIG_SERVER_ADDRESS}
       fail-fast: true
-logging:
-  level:
-    org.springframework.security: debug

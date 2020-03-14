@@ -4,6 +4,6 @@ spring:
       server:
         git:
           uri: https://gitlab.com/szmengran/microservices-repo.git
-          basedir: ./config_repo_git
+          basedir: ./git-repo
           username: ${GITLAB_USERNAME}
           password: ${GITLAB_PASSWORD}
