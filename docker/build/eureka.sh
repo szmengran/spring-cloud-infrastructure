@@ -18,3 +18,5 @@ mvn package
 progress "Building eureka image ..."
 docker tag $(docker build -t ${REGPREFIX}/eureka -q .) ${REGPREFIX}/eureka:${VERSION}
 cd -
+
+docker push ${REGPREFIX}/eureka:${VERSION}

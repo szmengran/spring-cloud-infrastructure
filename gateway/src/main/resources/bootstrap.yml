@@ -7,5 +7,3 @@ spring:
     config:
       uri: ${CONFIG_SERVER_ADDRESS}
       fail-fast: true
-  security:
-    resourceId: api

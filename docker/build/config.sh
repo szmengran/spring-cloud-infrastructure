@@ -18,3 +18,5 @@ mvn package
 progress "Building config image ..."
 docker tag $(docker build -t ${REGPREFIX}/config -q .) ${REGPREFIX}/config:${VERSION}
 cd -
+
+docker push ${REGPREFIX}/config:${VERSION}

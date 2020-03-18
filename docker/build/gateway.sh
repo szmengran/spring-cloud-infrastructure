@@ -18,3 +18,5 @@ mvn package
 progress "Building gateway image ..."
 docker tag $(docker build -t ${REGPREFIX}/gateway -q .) ${REGPREFIX}/gateway:${VERSION}
 cd -
+
+docker push ${REGPREFIX}/gateway:${VERSION}

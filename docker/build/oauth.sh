@@ -18,3 +18,5 @@ mvn package
 progress "Building oauth image ..."
 docker tag $(docker build -t ${REGPREFIX}/oauth -q .) ${REGPREFIX}/oauth:${VERSION}
 cd -
+
+docker push ${REGPREFIX}/oauth:${VERSION}

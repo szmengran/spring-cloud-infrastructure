@@ -41,6 +41,9 @@ public class UserServiceImpl implements UserDetailsService {
         Role role = new Role();
         role.setName("ROLE_ADMIN");
         roles.add(role);
+        role = new Role();
+        role.setName("ROLE_USER");
+        roles.add(role);
         return new User(user, roles);
     }
 }
