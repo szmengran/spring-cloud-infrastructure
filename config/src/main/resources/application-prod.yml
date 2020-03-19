@@ -3,7 +3,6 @@ spring:
     config:
       server:
         git:
-          uri: https://gitlab.com/szmengran/microservices-repo.git
-          basedir: ./git-repo
-          username: ${GITLAB_USERNAME}
-          password: ${GITLAB_PASSWORD}
+          uri: ${CONFIG_REPO_URL} #配置中心地址
+          username: ${GITLAB_USERNAME}  #配置中心用户名
+          password: ${GITLAB_PASSWORD}  #配置中心密码

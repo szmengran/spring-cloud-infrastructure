@@ -123,9 +123,9 @@
 				<version>2.1.1</version>
 			</dependency>
 			<dependency>
-				<groupId>com.oracle</groupId>
-				<artifactId>ojdbc14</artifactId>
-				<version>10.2.0.3.0</version>
+				<groupId>oracle</groupId>
+				<artifactId>ojdbc6</artifactId>
+				<version>11.2.0.3</version>
 			</dependency>
 			<dependency>
 				<groupId>com.github.pagehelper</groupId>
@@ -206,6 +206,27 @@
 			</dependency>
 		</dependencies>
 	</dependencyManagement>
+	<repositories>
+		<repository>
+			<id>nexus</id>
+			<name>nexus Milestones</name>
+			<url>http://192.168.14.75:8081/repository/3rd_part/</url>
+			<releases>
+				<enabled>true</enabled>
+			</releases>
+			<snapshots>
+				<enabled>true</enabled>
+			</snapshots>
+		</repository>
+		<repository>
+			<id>spring-milestones</id>
+			<name>Spring Milestones</name>
+			<url>https://repo.spring.io/libs-milestone</url>
+			<snapshots>
+				<enabled>false</enabled>
+			</snapshots>
+		</repository>
+	</repositories>
 	<modules>
 		<module>config</module>
 		<module>gateway</module>
