@@ -1,0 +1,22 @@
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: http://localhost:8761/eureka
+spring:
+  cloud:
+    config:
+      fail-fast: true
+swagger:
+  enable: true
+security:
+  oauth2:
+    client:
+      clientId: api
+      clientSecret: api
+      accessTokenUri: http://localhost:10000/oauth2/oauth/token
+      user-authorization-uri: http://localhost:10000/oauth2/oauth/authorize
+    resource:
+      tokenInfoUri: http://localhost:10000/oauth2/oauth/check_token
+      accessTokenUri: http://localhost:10000/oauth2/oauth/access_token
+      userAuthorizationUri: http://localhost:10000/oauth2/oauth/authorize
+      user-info-uri: http://localhost:10000/oauth2/oauth/user

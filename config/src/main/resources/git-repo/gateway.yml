@@ -1,0 +1,14 @@
+server:
+  port: 10000
+zuul:
+  routes:
+    oauth2:
+      path: /oauth2/**
+      serviceId: oauth2
+      stripPrefix: false
+      sensitiveHeaders:
+  host:
+    connect-timeout-millis: 500000
+    socket-timeout-millis: 100000
+  retryable: true #路由重试
+

@@ -1,6 +1,6 @@
 spring:
   application:
-    name: oauth
+    name: oauth2
   profiles:
     active: ${ENVIRONMENT}
   cloud:
