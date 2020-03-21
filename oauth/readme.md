@@ -11,6 +11,7 @@
 2.ResourceServe配置
 
 ```java
+
 @Configuration
 @EnableResourceServer
 public class ResourceServerConfig extends ResourceServerConfigurerAdapter {
@@ -18,15 +19,19 @@ public class ResourceServerConfig extends ResourceServerConfigurerAdapter {
 	@Value("${spring.security.resourceId}")
 	private String resourceId;
 	
+	@Value("${spring.security.oauth_resources:/**}")
+	private String oauth_resources; //需要校验的资源路径，默认校验所有
+	
     @Override
     public void configure(HttpSecurity http) throws Exception {
     	http.authorizeRequests()
+        .requestMatchers(EndpointRequest.to("health", "info")).permitAll()
         .anyRequest()
         .authenticated()
         .and()
         .requestMatchers()
-        // 配置需要保护的资源路径，下面配置的是保护所有资源
-        .antMatchers("/**");
+        // 配置需要保护的资源路径
+        .antMatchers(oauth_resources);
     }
     
     @Override
@@ -61,12 +66,12 @@ public class ResourceServerConfig extends ResourceServerConfigurerAdapter {
 
 #密码模式请求
 ```shell
-curl -XPOST api:api@localhost:10002/api/v1/oauth2/oauth/token -d "grant_type=password&username=admin&password=12345"
+curl -XPOST api:api@localhost:10002/oauth/token -d "grant_type=password&username=admin&password=12345"
 ```
 
 #客户端模式请求
 ```shell
-curl -XPOST api:api@localhost:10002/api/v1/oauth2/oauth/token -d "grant_type=client_credentials"
+curl -XPOST api:api@localhost:10002/oauth/token -d "grant_type=client_credentials"
 ```
 * 获取到的token如下
 
