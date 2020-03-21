@@ -2,6 +2,8 @@ package com.szmengran.security.controller;
 
 import java.security.Principal;
 
+import org.springframework.security.access.annotation.Secured;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.oauth2.config.annotation.web.configuration.EnableOAuth2Client;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -17,7 +19,7 @@ public class UserController {
      * @throws   
      * @author <a href="mailto:android_li@sina.cn">Joe</a>
      */
-    @GetMapping("/user")
+    @GetMapping("/oauth/user")
     public Principal user(Principal user){
         return user;
     }
@@ -34,8 +36,26 @@ public class UserController {
         return "limaoyuan";
     }
     
-    @GetMapping("/api/users")
+    @GetMapping("/user")
     public Principal users(Principal user){
             return user;
+    }
+    
+    @PreAuthorize("#oauth2.hasScope('read')")
+    @GetMapping("/scope")
+    public Principal scope(Principal user){
+        return user;
+    }
+    
+    @PreAuthorize("hasRole('ADMIN')")
+    @GetMapping("/preAuthorize")
+    public Principal preAuthorize(Principal user){
+            return user;
+    }
+    
+    @Secured("('ADMIN')")
+    @GetMapping("/secured")
+    public Principal secured(Principal user){
+        return user;
     }
 }

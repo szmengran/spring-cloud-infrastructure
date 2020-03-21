@@ -1,5 +1,6 @@
 package com.szmengran.security.config;
 
+import org.springframework.boot.actuate.autoconfigure.security.servlet.EndpointRequest;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -24,15 +25,21 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     	http
     	.requestMatchers().anyRequest()
     	.and()
-    	.authorizeRequests().antMatchers("/oauth/*").permitAll();
+    	.authorizeRequests()
+    	.requestMatchers(EndpointRequest.to("health", "info")).permitAll();
     }
     
     @Override
     public void configure(WebSecurity web) throws Exception {
         web.ignoring().antMatchers(
-                                   "/swagger-resources/**",
-                                   "/swagger-ui.html"
-                                   );
+                "/actuator/**",
+        		"/v2/api-docs", 
+        		"/configuration/ui", 
+        		"/swagger-resources/**", 
+        		"/configuration/**", 
+        		"/swagger-ui.html", 
+        		"/webjars/**"
+        		);
     }
     
     // 不定义没有password grant_type
