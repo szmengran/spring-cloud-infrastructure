@@ -1,0 +1,11 @@
+logging.level.: INFO
+eureka:
+  instance:
+    hostname: localhost
+  client:
+    registerWithEureka: false
+    fetchRegistry: false
+    serviceUrl:
+      defaultZone: http://localhost:${server.port}/eureka/
+
+spring.cloud.config.discovery.enabled: true
