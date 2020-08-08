@@ -1,24 +1,18 @@
-
-package com.szmengran.config;
+package com.szmengran.security;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
-import org.springframework.cloud.config.server.EnableConfigServer;
 import org.springframework.cloud.context.config.annotation.RefreshScope;
+import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 
 @SpringBootApplication
-@EnableConfigServer
 @EnableDiscoveryClient
+@EnableGlobalMethodSecurity(prePostEnabled = true)
 @RefreshScope
-public class ConfigApplication {
+public class OauthApplication{
 
     public static void main(String[] args) {
-        SpringApplication.run(ConfigApplication.class, args);
+        SpringApplication.run(OauthApplication.class, args);
     }
-    
 }
-
-
-
-

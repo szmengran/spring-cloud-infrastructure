@@ -1,9 +1,0 @@
-spring:
-  application:
-    name: oauth2
-  profiles:
-    active: ${ENVIRONMENT}
-  cloud:
-    config:
-      uri: ${CONFIG_SERVER_ADDRESS}
-      fail-fast: true

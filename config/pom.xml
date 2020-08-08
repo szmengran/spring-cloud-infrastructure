@@ -5,13 +5,17 @@
     <parent>
         <groupId>com.szmengran</groupId>
         <artifactId>spring-cloud-infrastructure</artifactId>
-        <version>1.0.0</version>
+        <version>1.0.0.RELEASE</version>
     </parent>
     <artifactId>config</artifactId>
     <dependencies>
         <dependency>
             <groupId>org.springframework.cloud</groupId>
             <artifactId>spring-cloud-config-server</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.cloud</groupId>
+            <artifactId>spring-cloud-starter-netflix-eureka-client</artifactId>
         </dependency>
     </dependencies>
 

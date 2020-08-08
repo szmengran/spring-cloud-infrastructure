@@ -4,4 +4,8 @@ spring:
   application:
     name: config
   profiles:
-    active: ${ENVIRONMENT}
+    active: ${ENVIRONMENT:native}
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: ${EUREKA_SERVER_ADDRESS:http://localhost:8761/eureka}

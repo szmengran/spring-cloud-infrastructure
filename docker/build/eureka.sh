@@ -11,7 +11,7 @@ set -e
 
 # Docker image prefix
 REGPREFIX=registry.cn-beijing.aliyuncs.com/szmengran
-VERSION=1.0.0
+VERSION=1.0.0.RELEASE
 
 cd ../eureka
 mvn package

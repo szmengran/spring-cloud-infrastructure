@@ -5,7 +5,7 @@
 	<parent>
 		<groupId>com.szmengran</groupId>
 		<artifactId>spring-cloud-infrastructure</artifactId>
-		<version>1.0.0.RELEASE</version>
+		<version>1.0.0</version>
 	</parent>
 	<artifactId>gateway</artifactId>
 	<dependencies>
@@ -20,10 +20,6 @@
 		<dependency>
 			<groupId>org.springframework.cloud</groupId>
 			<artifactId>spring-cloud-starter-netflix-eureka-client</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-starter-actuator</artifactId>
 		</dependency>
 		<!-- 路由重试功能 -->
 		<dependency>
