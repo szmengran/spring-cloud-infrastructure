@@ -2,6 +2,7 @@ package com.szmengran.security.common.infrastructure.config;
 
 
 import com.alibaba.druid.pool.DruidDataSource;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.redis.connection.RedisConnectionFactory;
@@ -26,6 +27,7 @@ import javax.annotation.Resource;
  */
 @Configuration
 @EnableAuthorizationServer
+@Slf4j
 public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdapter {
 
     @Resource
@@ -60,7 +62,7 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
             endpoints.authenticationManager(authenticationManager);
             endpoints.tokenStore(tokenStore());
         } catch(Exception e) {
-            e.printStackTrace();
+            log.error("授权异常:{}", e);
         }
     }
 
